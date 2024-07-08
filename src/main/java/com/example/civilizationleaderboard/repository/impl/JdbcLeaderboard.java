@@ -3,6 +3,7 @@ package com.example.civilizationleaderboard.repository.impl;
 import com.example.civilizationleaderboard.model.GameStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import com.example.civilizationleaderboard.repository.LeaderboardRepository;
+import com.example.civilizationleaderboard.service.LeaderboardService;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -23,8 +24,29 @@ public class JdbcLeaderboard implements LeaderboardRepository {
 
     //CRUD Operations
     @Override
-    public Leaderboard getLeaderboard(long userId) {
-        return null;
+    public Leaderboard getLeaderboard(long leaderboardId) {
+        Leaderboard leaderboard = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            String getLeaderboard = """
+                    SELECT * FROM leaderboard
+                    WHERE id = ?;
+                    """;
+            PreparedStatement preparedStatement = connection.prepareStatement(getLeaderboard);
+            preparedStatement.setLong(1, leaderboardId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                leaderboard = new Leaderboard(
+                        resultSet.getString(3),
+                        resultSet.getString(4)
+                );
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return leaderboard;
     }
 
     @Override
@@ -36,8 +58,8 @@ public class JdbcLeaderboard implements LeaderboardRepository {
     public boolean createLeaderboard(Leaderboard leaderboard) {
         boolean isCreated = false;
 
-        try(Connection connection = dataSource.getConnection()){
-            try{
+        try (Connection connection = dataSource.getConnection()) {
+            try {
                 connection.setAutoCommit(false);
 
                 String createLeaderboard = """
@@ -51,13 +73,13 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 connection.setAutoCommit(true);
                 connection.commit();
 
-            }catch (SQLException sqlException){
+            } catch (SQLException sqlException) {
                 connection.rollback();
                 connection.setAutoCommit(true);
                 sqlException.printStackTrace();
             }
 
-        }catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
 
