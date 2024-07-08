@@ -16,4 +16,5 @@ public interface LeaderboardRepository {
 
     //Other
     boolean addGameStat(GameStat gameStat, long userId);
+    boolean makePublic(long leaderboardId);
 }
