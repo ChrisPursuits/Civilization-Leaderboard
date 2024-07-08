@@ -1,5 +1,6 @@
 package com.example.civilizationleaderboard.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Leaderboard {
@@ -8,6 +9,13 @@ public class Leaderboard {
     private String description;
     private boolean isPublic;
     private List<GameStat> gameStatList;
+
+    public Leaderboard(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.isPublic = true;
+        this.gameStatList = new ArrayList<>();
+    }
 
     public String getName() {
         return name;
