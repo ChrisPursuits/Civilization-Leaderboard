@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class LeaderboardService {
 
-    private LeaderboardRepository leaderboardRepository;
-    private DtoMapper dtoMapper;
+    private final LeaderboardRepository leaderboardRepository;
+    private final DtoMapper dtoMapper;
 
     public LeaderboardService(LeaderboardRepository leaderboardRepository, DtoMapper dtoMapper) {
         this.leaderboardRepository = leaderboardRepository;

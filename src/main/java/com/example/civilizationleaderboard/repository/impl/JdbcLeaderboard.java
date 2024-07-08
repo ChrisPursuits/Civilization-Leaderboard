@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public class JdbcLeaderboard implements LeaderboardRepository {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     public JdbcLeaderboard(DataSource dataSource) {
         this.dataSource = dataSource;
