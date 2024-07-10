@@ -8,7 +8,7 @@ import java.util.List;
 public interface LeaderboardRepository {
 
     //CRUD-operations
-    Leaderboard getLeaderboard(String leaderboardName);
+    Leaderboard getLeaderboard(long leaderboardId);
     List<Leaderboard> getAllLeaderboards(long userId);
     boolean createLeaderboard(Leaderboard leaderboard);
     boolean deleteLeaderboard(long leaderboardId);

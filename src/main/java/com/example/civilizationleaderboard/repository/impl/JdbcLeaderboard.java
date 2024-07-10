@@ -26,36 +26,37 @@ public class JdbcLeaderboard implements LeaderboardRepository {
 
     //CRUD Operations
     @Override
-    public Leaderboard getLeaderboard(String leaderboardName) {
+    public Leaderboard getLeaderboard(long leaderboardId) {
         Leaderboard leaderboard = null;
 
         try (Connection connection = dataSource.getConnection()) {
             String getLeaderboard = """
-                    SELECT * FROM leaderboard
-                    WHERE name = ?;
+                    SELECT * FROM leaderboard l
+                    JOIN game_stat gs ON gs.leaderboard_id = l.id
+                    WHERE l.id = ?;
                     """;
             PreparedStatement preparedStatement = connection.prepareStatement(getLeaderboard);
-            preparedStatement.setString(1, leaderboardName);
+            preparedStatement.setLong(1, leaderboardId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next() && resultSet.getString("name").equalsIgnoreCase(leaderboardName)) {
+            if (resultSet.next()) {
                 List<GameStat> gameStatList = new ArrayList<>();
 
                 leaderboard = new Leaderboard(
-                        resultSet.getString(3),
-                        resultSet.getString(4)
+                        resultSet.getString(2),
+                        resultSet.getString(3)
                 );
 
                 GameStat gameStat = new GameStat(
-                        resultSet.getString("name"),
-                        resultSet.getBoolean("haveWon"),
-                        resultSet.getInt("victory_points"),
-                        VictoryType.valueOf(resultSet.getString("victory_type")),
-                        resultSet.getInt("science"),
-                        resultSet.getInt("culture")
+                        resultSet.getString(8),
+                        resultSet.getBoolean(9),
+                        resultSet.getInt(10),
+                        VictoryType.valueOf(resultSet.getString(11)),
+                        resultSet.getInt(12),
+                        resultSet.getInt(13)
                 );
                 gameStatList.add(gameStat);
-                gameStatList = getGameStatListFromLeaderboard(resultSet, leaderboardName, gameStatList);
+                gameStatList = getGameStatListFromLeaderboard(resultSet, gameStatList);
 
                 leaderboard.setGameStatList(gameStatList);
             }
@@ -66,16 +67,16 @@ public class JdbcLeaderboard implements LeaderboardRepository {
         return leaderboard;
     }
 
-    private List<GameStat> getGameStatListFromLeaderboard(ResultSet leaderboardRs, String leaderboardName, List<GameStat> gameStatList) {
+    private List<GameStat> getGameStatListFromLeaderboard(ResultSet leaderboardRs, List<GameStat> gameStatList) {
         try {
-            while (leaderboardRs.next() && leaderboardRs.getString("name").equalsIgnoreCase(leaderboardName)) {
+            while (leaderboardRs.next()) {
                 GameStat gameStat = new GameStat(
-                        leaderboardRs.getString("name"),
-                        leaderboardRs.getBoolean("haveWon"),
-                        leaderboardRs.getInt("victory_points"),
-                        VictoryType.valueOf(leaderboardRs.getString("victory_type")),
-                        leaderboardRs.getInt("science"),
-                        leaderboardRs.getInt("culture")
+                        leaderboardRs.getString(8),
+                        leaderboardRs.getBoolean(9),
+                        leaderboardRs.getInt(10),
+                        VictoryType.valueOf(leaderboardRs.getString(11)),
+                        leaderboardRs.getInt(12),
+                        leaderboardRs.getInt(13)
                 );
                 gameStatList.add(gameStat);
             }

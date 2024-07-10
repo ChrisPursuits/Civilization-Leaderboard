@@ -23,8 +23,8 @@ public class LeaderboardService {
         leaderboardRepository.createLeaderboard(leaderboard);
     }
 
-    public ViewLeaderboardDto getLeaderboard(String leaderboardName) {
-        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(leaderboardName);
+    public ViewLeaderboardDto getLeaderboard(long leaderboardId) {
+        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(leaderboardId);
         return dtoMapper.toViewLeaderboardDto(leaderboard);
     }
 }
