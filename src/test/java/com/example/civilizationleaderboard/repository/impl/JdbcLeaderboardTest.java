@@ -1,6 +1,7 @@
 package com.example.civilizationleaderboard.repository.impl;
 
 import com.example.civilizationleaderboard.model.GameStat;
+import com.example.civilizationleaderboard.model.Leaderboard;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +39,8 @@ class JdbcLeaderboardTest {
                 new GameStat("game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21))
         );
 
+
+
         List<GameStat> actualGameStatList = jdbcLeaderboard.getLeaderboard(1).getGameStatList();
 
         assertEquals(expectedGameStatList, actualGameStatList);
@@ -50,6 +53,14 @@ class JdbcLeaderboardTest {
 
     @Test
     void createLeaderboard() {
+        Leaderboard leaderboard = new Leaderboard("newLeaderBoard", "newDescription");
+
+        jdbcLeaderboard.createLeaderboard(leaderboard);
+
+        Leaderboard expectedLeaderboard = leaderboard;
+        Leaderboard actualLeaderboard = jdbcLeaderboard.getLeaderboard(2);
+
+        assertEquals(expectedLeaderboard, actualLeaderboard);
     }
 
     @Test

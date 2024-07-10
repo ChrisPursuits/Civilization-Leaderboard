@@ -3,15 +3,11 @@ package com.example.civilizationleaderboard.repository.impl;
 import com.example.civilizationleaderboard.model.GameStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import com.example.civilizationleaderboard.repository.LeaderboardRepository;
-import com.example.civilizationleaderboard.service.LeaderboardService;
 import org.springframework.stereotype.Repository;
 import victoryTypeEnum.VictoryType;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +28,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
         try (Connection connection = dataSource.getConnection()) {
             String getLeaderboard = """
                     SELECT * FROM leaderboard l
-                    JOIN game_stat gs ON gs.leaderboard_id = l.id
+                    LEFT JOIN game_stat gs ON gs.leaderboard_id = l.id
                     WHERE l.id = ?;
                     """;
             PreparedStatement preparedStatement = connection.prepareStatement(getLeaderboard);
@@ -40,6 +36,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+                System.out.println("inside get method");
                 List<GameStat> gameStatList = new ArrayList<>();
 
                 leaderboard = new Leaderboard(
@@ -47,18 +44,21 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                         resultSet.getString(3)
                 );
 
-                GameStat gameStat = new GameStat(
-                        resultSet.getString(8),
-                        resultSet.getBoolean(9),
-                        resultSet.getInt(11),
-                        VictoryType.valueOf(resultSet.getString(10)),
-                        resultSet.getInt(12),
-                        resultSet.getInt(13)
-                );
-                gameStatList.add(gameStat);
-                gameStatList = getGameStatListFromLeaderboard(resultSet, gameStatList);
+                if (resultSet.getString(8) != null) {
+                    GameStat gameStat = new GameStat(
+                            resultSet.getString(8),
+                            resultSet.getBoolean(9),
+                            resultSet.getInt(11),
+                            VictoryType.valueOf(resultSet.getString(10)),
+                            resultSet.getInt(12),
+                            resultSet.getInt(13)
+                    );
+                    gameStatList.add(gameStat);
+                    gameStatList = getGameStatListFromLeaderboard(resultSet, gameStatList);
 
-                leaderboard.setGameStatList(gameStatList);
+                    leaderboard.setGameStatList(gameStatList);
+                    return leaderboard;
+                }
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -101,15 +101,20 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 connection.setAutoCommit(false);
 
                 String createLeaderboard = """
-                        INSERT INTO leaderboard (name, description) VALUES(?,?);
+                        INSERT INTO leaderboard (name, description) VALUES(?, ?);
                         """;
-                PreparedStatement preparedStatement = connection.prepareStatement(createLeaderboard);
+                PreparedStatement preparedStatement = connection.prepareStatement(createLeaderboard, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, leaderboard.getName());
                 preparedStatement.setString(2, leaderboard.getDescription());
                 isCreated = 0 < preparedStatement.executeUpdate();
-
-                connection.setAutoCommit(true);
+                System.out.println("created");
+                ResultSet rs = preparedStatement.getGeneratedKeys();
+                if (rs.next()) {
+                    long id = rs.getLong(1);
+                    System.out.println("new id: " + id);
+                }
                 connection.commit();
+                connection.setAutoCommit(true);
 
             } catch (SQLException sqlException) {
                 connection.rollback();

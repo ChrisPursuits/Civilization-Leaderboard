@@ -2,6 +2,7 @@ package com.example.civilizationleaderboard.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Leaderboard {
 
@@ -54,5 +55,27 @@ public class Leaderboard {
 
     public void setGameStatList(List<GameStat> gameStatList) {
         this.gameStatList = gameStatList;
+    }
+
+    @Override
+    public String toString() {
+        return "Leaderboard{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", isPublic=" + isPublic +
+                ", gameStatList=" + gameStatList +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Leaderboard that)) return false;
+        return isPublic == that.isPublic && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(gameStatList, that.gameStatList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description, isPublic, gameStatList);
     }
 }
