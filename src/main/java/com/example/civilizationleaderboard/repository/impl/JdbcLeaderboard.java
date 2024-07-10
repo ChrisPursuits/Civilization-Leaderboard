@@ -36,7 +36,6 @@ public class JdbcLeaderboard implements LeaderboardRepository {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                System.out.println("inside get method");
                 List<GameStat> gameStatList = new ArrayList<>();
 
                 leaderboard = new Leaderboard(
@@ -103,16 +102,11 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 String createLeaderboard = """
                         INSERT INTO leaderboard (name, description) VALUES(?, ?);
                         """;
-                PreparedStatement preparedStatement = connection.prepareStatement(createLeaderboard, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement preparedStatement = connection.prepareStatement(createLeaderboard);
                 preparedStatement.setString(1, leaderboard.getName());
                 preparedStatement.setString(2, leaderboard.getDescription());
                 isCreated = 0 < preparedStatement.executeUpdate();
-                System.out.println("created");
-                ResultSet rs = preparedStatement.getGeneratedKeys();
-                if (rs.next()) {
-                    long id = rs.getLong(1);
-                    System.out.println("new id: " + id);
-                }
+
                 connection.commit();
                 connection.setAutoCommit(true);
 
