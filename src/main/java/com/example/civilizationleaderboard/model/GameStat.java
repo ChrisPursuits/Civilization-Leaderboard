@@ -2,6 +2,8 @@ package com.example.civilizationleaderboard.model;
 
 import victoryTypeEnum.VictoryType;
 
+import java.util.Objects;
+
 public class GameStat {
 
     private String name;
@@ -16,6 +18,15 @@ public class GameStat {
         this.haveWon = haveWon;
         this.victoryPoints = victoryPoints;
         this.victoryType = victoryType;
+        this.science = science;
+        this.culture = culture;
+    }
+
+    public GameStat(String name, int victoryPoints, int science, int culture) {
+        this.name = name;
+        this.haveWon = false;
+        this.victoryPoints = victoryPoints;
+        this.victoryType = VictoryType.LOSE;
         this.science = science;
         this.culture = culture;
     }
@@ -66,5 +77,17 @@ public class GameStat {
 
     public void setCulture(int culture) {
         this.culture = culture;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GameStat gameStat)) return false;
+        return haveWon == gameStat.haveWon && victoryPoints == gameStat.victoryPoints && science == gameStat.science && culture == gameStat.culture && Objects.equals(name, gameStat.name) && victoryType == gameStat.victoryType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, haveWon, victoryPoints, victoryType, science, culture);
     }
 }

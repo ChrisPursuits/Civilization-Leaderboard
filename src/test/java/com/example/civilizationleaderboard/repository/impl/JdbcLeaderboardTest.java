@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+import victoryTypeEnum.VictoryType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,19 @@ class JdbcLeaderboardTest {
         assertEquals(expectedName, actualName);
         assertEquals(expectedDescription, actualDescription);
     }
+
+    @Test
+    void getGameStatsOnLeaderboard() {
+        List<GameStat> expectedGameStatList = new ArrayList<>(List.of(
+                new GameStat("game1", 521, 111, 121),
+                new GameStat("game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21))
+        );
+
+        List<GameStat> actualGameStatList = jdbcLeaderboard.getLeaderboard(1).getGameStatList();
+
+        assertEquals(expectedGameStatList, actualGameStatList);
+    }
+
 
     @Test
     void getAllLeaderboards() {
