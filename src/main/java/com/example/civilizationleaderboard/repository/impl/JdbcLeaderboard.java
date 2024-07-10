@@ -50,8 +50,8 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 GameStat gameStat = new GameStat(
                         resultSet.getString(8),
                         resultSet.getBoolean(9),
-                        resultSet.getInt(10),
-                        VictoryType.valueOf(resultSet.getString(11)),
+                        resultSet.getInt(11),
+                        VictoryType.valueOf(resultSet.getString(10)),
                         resultSet.getInt(12),
                         resultSet.getInt(13)
                 );
@@ -73,8 +73,8 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 GameStat gameStat = new GameStat(
                         leaderboardRs.getString(8),
                         leaderboardRs.getBoolean(9),
-                        leaderboardRs.getInt(10),
-                        VictoryType.valueOf(leaderboardRs.getString(11)),
+                        leaderboardRs.getInt(11),
+                        VictoryType.valueOf(leaderboardRs.getString(10)),
                         leaderboardRs.getInt(12),
                         leaderboardRs.getInt(13)
                 );

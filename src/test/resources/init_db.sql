@@ -1,3 +1,4 @@
+DROP DATABASE  cl_test_db;
 CREATE DATABASE IF NOT EXISTS cl_test_db;
 USE cl_test_db;
 
@@ -36,7 +37,7 @@ CREATE TABLE IF NOT EXISTS game_stat
     leaderboard_id   INT         NOT NULL,
     name             VARCHAR(50) NOT NULL,
     haveWon          boolean DEFAULT FALSE,
-    victory_type     VARCHAR(20),
+    victory_type     VARCHAR(20) NOT NULL DEFAULT 'LOSE',
     victory_points   LONG        NOT NULL,
     science          LONG        NOT NULL,
     culture          LONG        NOT NULL,

@@ -4,5 +4,6 @@ public enum VictoryType {
     SCIENTIFIC,
     CULTURAL,
     DOMINATION,
-    RELIGIOUS
+    RELIGIOUS,
+    LOSE
 }
