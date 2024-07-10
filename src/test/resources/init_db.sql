@@ -66,5 +66,8 @@ INSERT INTO users (username, password) value('john doe', 123);
 INSERT INTO leaderboard (name, description)
 VALUES ('leaderboardOne', 'descriptionOne');
 
-INSERT INTO game_stat (account_username, leaderboard_id, name, victory_type, victory_points, science, culture)
-values ('john doe', 1, 'game1', 'science', 521,111,121);
+INSERT INTO game_stat (account_username, leaderboard_id, name, victory_points, science, culture)
+values ('john doe', 1, 'game1', 521,111,121);
+
+INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
+values ('john doe', 1, 'game2', true, 'SCIENTIFIC', 777,1811,21);
