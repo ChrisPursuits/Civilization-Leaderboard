@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS authorities
 CREATE TABLE IF NOT EXISTS leaderboard
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    name        VARCHAR(50) UNIQUE NOT NULL,
+    name        VARCHAR(50) NOT NULL,
     description VARCHAR(100),
     isPublic    BOOLEAN DEFAULT TRUE
 );
@@ -59,7 +59,12 @@ CREATE TABLE IF NOT EXISTS invitations
 );
 
 
-
 -- DATA INSERTION
 
-INSERT INTO leaderboard (name, description) VALUES ('leaderboardOne', 'descriptionOne');
+INSERT INTO users (username, password) value('john doe', 123);
+
+INSERT INTO leaderboard (name, description)
+VALUES ('leaderboardOne', 'descriptionOne');
+
+INSERT INTO game_stat (account_username, leaderboard_id, name, victory_type, victory_points, science, culture)
+values ('john doe', 1, 'game1', 'science', 521,111,121);
