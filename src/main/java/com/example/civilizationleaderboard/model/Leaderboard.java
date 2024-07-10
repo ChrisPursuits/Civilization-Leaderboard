@@ -10,6 +10,13 @@ public class Leaderboard {
     private boolean isPublic;
     private List<GameStat> gameStatList;
 
+    public Leaderboard(String name, String description, List<GameStat> gameStatList) {
+        this.name = name;
+        this.description = description;
+        this.isPublic = true;
+        this.gameStatList = gameStatList;
+    }
+
     public Leaderboard(String name, String description) {
         this.name = name;
         this.description = description;
