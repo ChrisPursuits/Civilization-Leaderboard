@@ -1,7 +1,7 @@
 package com.example.civilizationleaderboard.service;
 
 import com.example.civilizationleaderboard.DtoMapper;
-import com.example.civilizationleaderboard.dto.LeaderboardDto;
+import com.example.civilizationleaderboard.dto.CreateLeaderboardDto;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import com.example.civilizationleaderboard.repository.LeaderboardRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class LeaderboardService {
         this.dtoMapper = dtoMapper;
     }
 
-    public void createLeaderboard(LeaderboardDto dto) {
+    public void createLeaderboard(CreateLeaderboardDto dto) {
         Leaderboard leaderboard = dtoMapper.toLeaderboard(dto);
         leaderboardRepository.createLeaderboard(leaderboard);
     }
