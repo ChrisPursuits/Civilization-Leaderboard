@@ -142,7 +142,40 @@ public class JdbcLeaderboard implements LeaderboardRepository {
     //OTHER
     @Override
     public boolean addGameStat(GameStat gameStat, int leaderboardId) {
-        return false;
+        //Currently this method is redundant since the gamestat automaticly gets added to the leaderboard when its created.
+        //In this version you cant have a personal log that tracks all your games.
+        //For that version we would want this method.
+
+//        boolean isAdded = false;
+//
+//        try (Connection connection = dataSource.getConnection()){
+//            try{
+//                connection.setAutoCommit(false);
+//
+//                String addGameStatToLeaderboard = """
+//                        INSERT INTO game_stat (leaderboard_id)
+//                        VALUE (?)
+//                        """;
+//
+//                PreparedStatement preparedStatement = connection.prepareStatement(addGameStatToLeaderboard);
+//                preparedStatement.setInt(1, leaderboardId);
+//                int affectedRows = preparedStatement.executeUpdate();
+//                isAdded = affectedRows > 0;
+//
+//                connection.commit();
+//                connection.setAutoCommit(true);
+//
+//            }catch (SQLException sqlException) {
+//                connection.rollback();
+//                connection.setAutoCommit(true);
+//                sqlException.printStackTrace();
+//            }
+//
+//        }catch (SQLException sqlException) {
+//            sqlException.printStackTrace();
+//        }
+//
+//        return isAdded;
     }
 
     @Override
