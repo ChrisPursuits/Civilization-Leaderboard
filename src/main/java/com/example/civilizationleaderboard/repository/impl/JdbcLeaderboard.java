@@ -176,6 +176,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
 //        }
 //
 //        return isAdded;
+        return false;
     }
 
     @Override
