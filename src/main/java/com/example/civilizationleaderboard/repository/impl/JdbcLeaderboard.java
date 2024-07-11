@@ -22,7 +22,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
 
     //CRUD Operations
     @Override
-    public Leaderboard getLeaderboard(long leaderboardId) {
+    public Leaderboard getLeaderboard(int leaderboardId) {
         Leaderboard leaderboard = null;
 
         try (Connection connection = dataSource.getConnection()) {
@@ -93,7 +93,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
     }
 
     @Override
-    public List<Leaderboard> getAllLeaderboards(long userId) {
+    public List<Leaderboard> getAllLeaderboards(String username) {
         return null;
     }
 
@@ -130,23 +130,23 @@ public class JdbcLeaderboard implements LeaderboardRepository {
     }
 
     @Override
-    public boolean deleteLeaderboard(long leaderboardId) {
+    public boolean deleteLeaderboard(int leaderboardId) {
         return false;
     }
 
     @Override
-    public boolean editLeaderboard(long leaderboardId) {
+    public boolean editLeaderboard(int leaderboardId) {
         return false;
     }
 
     //OTHER
     @Override
-    public boolean addGameStat(GameStat gameStat, long userId) {
+    public boolean addGameStat(GameStat gameStat, int leaderboardId) {
         return false;
     }
 
     @Override
-    public boolean makePublic(long leaderboardId) {
+    public boolean makePublic(int leaderboardId) {
         return false;
     }
 }

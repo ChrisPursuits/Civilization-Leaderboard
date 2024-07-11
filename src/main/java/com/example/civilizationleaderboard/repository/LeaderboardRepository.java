@@ -8,13 +8,13 @@ import java.util.List;
 public interface LeaderboardRepository {
 
     //CRUD-operations
-    Leaderboard getLeaderboard(long leaderboardId);
-    List<Leaderboard> getAllLeaderboards(long userId);
+    Leaderboard getLeaderboard(int leaderboardId);
+    List<Leaderboard> getAllLeaderboards(String username);
     boolean createLeaderboard(Leaderboard leaderboard);
-    boolean deleteLeaderboard(long leaderboardId);
-    boolean editLeaderboard(long leaderboardId);
+    boolean deleteLeaderboard(int leaderboardId);
+    boolean editLeaderboard(int leaderboardId);
 
     //Other
-    boolean addGameStat(GameStat gameStat, long userId);
-    boolean makePublic(long leaderboardId);
+    boolean addGameStat(GameStat gameStat, int leaderboardId);
+    boolean makePublic(int leaderboardId);
 }
