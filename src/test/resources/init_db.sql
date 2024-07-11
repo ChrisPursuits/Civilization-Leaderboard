@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS game_stat
 (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     account_username VARCHAR(50) NOT NULL,
-    leaderboard_id   INT         NOT NULL,
+    leaderboard_id   INT,
     name             VARCHAR(50) NOT NULL,
     haveWon          boolean              DEFAULT FALSE,
     victory_type     VARCHAR(20) NOT NULL DEFAULT 'LOSE',
