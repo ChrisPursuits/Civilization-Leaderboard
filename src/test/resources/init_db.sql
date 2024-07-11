@@ -1,4 +1,4 @@
-DROP DATABASE  cl_test_db;
+DROP DATABASE cl_test_db;
 CREATE DATABASE IF NOT EXISTS cl_test_db;
 USE cl_test_db;
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS game_stat
     account_username VARCHAR(50) NOT NULL,
     leaderboard_id   INT         NOT NULL,
     name             VARCHAR(50) NOT NULL,
-    haveWon          boolean DEFAULT FALSE,
+    haveWon          boolean              DEFAULT FALSE,
     victory_type     VARCHAR(20) NOT NULL DEFAULT 'LOSE',
     victory_points   LONG        NOT NULL,
     science          LONG        NOT NULL,
@@ -62,13 +62,13 @@ CREATE TABLE IF NOT EXISTS invitations
 
 -- DATA INSERTION
 
-INSERT INTO users (username, password) value('john doe', 123);
+INSERT INTO users (username, password) value ('john doe', 123);
 
 INSERT INTO leaderboard (name, description)
 VALUES ('leaderboardOne', 'descriptionOne');
 
 INSERT INTO game_stat (account_username, leaderboard_id, name, victory_points, science, culture)
-values ('john doe', 1, 'game1', 521,111,121);
+values ('john doe', 1, 'game1', 521, 111, 121);
 
 INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
-values ('john doe', 1, 'game2', true, 'SCIENTIFIC', 777,1811,21);
+values ('john doe', 1, 'game2', true, 'SCIENTIFIC', 777, 1811, 21);
