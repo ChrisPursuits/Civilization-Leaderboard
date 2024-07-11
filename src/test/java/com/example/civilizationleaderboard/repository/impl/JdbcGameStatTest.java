@@ -26,11 +26,11 @@ class JdbcGameStatTest {
 
     @Test
     void createGameStat() {
-        GameStat expectedGameStat = new GameStat(3, "Chris", 1, "11/07-2024", true, 456, VictoryType.DOMINATION, 756, 642);
+        GameStat expectedGameStat = new GameStat(4, "Chris", 1, "11/07-2024", true, 456, VictoryType.DOMINATION, 756, 642);
         GameStat gameStat = expectedGameStat;
 
         jdbcGameStat.createGameStat(gameStat);
-        GameStat actualGameStat = jdbcGameStat.getGameStat(3);
+        GameStat actualGameStat = jdbcGameStat.getGameStat(4);
 
         assertEquals(expectedGameStat, actualGameStat);
     }
