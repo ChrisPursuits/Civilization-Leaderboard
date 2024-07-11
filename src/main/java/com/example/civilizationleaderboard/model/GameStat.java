@@ -6,6 +6,9 @@ import java.util.Objects;
 
 public class GameStat {
 
+    private int id;
+    private String accountUsername;
+    private int leaderboardId;
     private String name;
     private boolean haveWon;
     private int victoryPoints;
@@ -13,6 +16,20 @@ public class GameStat {
     private int science;
     private int culture;
 
+    //Constructor used in impl.
+    public GameStat(int id, String accountUsername, int leaderboardId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+        this.id = id;
+        this.accountUsername = accountUsername;
+        this.leaderboardId = leaderboardId;
+        this.name = name;
+        this.haveWon = haveWon;
+        this.victoryPoints = victoryPoints;
+        this.victoryType = victoryType;
+        this.science = science;
+        this.culture = culture;
+    }
+
+    //Constructor used in DtoMapper
     public GameStat(String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
         this.name = name;
         this.haveWon = haveWon;
@@ -22,6 +39,7 @@ public class GameStat {
         this.culture = culture;
     }
 
+    //Constructor used in integration test
     public GameStat(String name, int victoryPoints, int science, int culture) {
         this.name = name;
         this.haveWon = false;
