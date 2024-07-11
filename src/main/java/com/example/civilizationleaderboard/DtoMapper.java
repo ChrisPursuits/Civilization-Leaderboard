@@ -2,6 +2,7 @@ package com.example.civilizationleaderboard;
 
 import com.example.civilizationleaderboard.dto.CreateGameStatDto;
 import com.example.civilizationleaderboard.dto.CreateLeaderboardDto;
+import com.example.civilizationleaderboard.dto.ViewGameStatDto;
 import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
 import com.example.civilizationleaderboard.model.GameStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
@@ -30,6 +31,17 @@ public class DtoMapper {
                 gameStat.victoryType(),
                 gameStat.science(),
                 gameStat.culture()
+        );
+    }
+
+    public ViewGameStatDto toGameStatDto(GameStat gameStat) {
+        return new ViewGameStatDto(
+                gameStat.getName(),
+                gameStat.isHaveWon(),
+                gameStat.getVictoryPoints(),
+                gameStat.getVictoryType(),
+                gameStat.getScience(),
+                gameStat.getCulture()
         );
     }
 }
