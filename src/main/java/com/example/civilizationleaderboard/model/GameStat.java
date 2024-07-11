@@ -16,7 +16,7 @@ public class GameStat {
     private int science;
     private int culture;
 
-    //Constructor used in impl.
+    //Constructor used in impl, DtoMapper and test.
     public GameStat(int id, String accountUsername, int leaderboardId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
         this.id = id;
         this.accountUsername = accountUsername;
@@ -29,10 +29,10 @@ public class GameStat {
         this.culture = culture;
     }
 
-    //Constructor used in DtoMapper
-    public GameStat(String accountUsername, int leaderboardId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    //Used for creating GameStat that is not part of any leaderboard. Meant to be used in future version where you can have a private log of all your games.
+    //Precisely used in mapping of CreatePrivateGameStatDto
+    public GameStat(String accountUsername, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
         this.accountUsername = accountUsername;
-        this.leaderboardId = leaderboardId;
         this.name = name;
         this.haveWon = haveWon;
         this.victoryPoints = victoryPoints;
@@ -41,12 +41,27 @@ public class GameStat {
         this.culture = culture;
     }
 
-    //Constructor used in integration test
-    public GameStat(String name, int victoryPoints, int science, int culture) {
+    //Used for creating GameStat that is not part of any leaderboard. Meant to be used in future version where you can have a private log of all your games.
+    //Precisely used in mapping of PrivateGameStatDto (in get method?)
+    public GameStat(int id, String accountUsername, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+        this.id = id;
+        this.accountUsername = accountUsername;
         this.name = name;
-        this.haveWon = false;
+        this.haveWon = haveWon;
         this.victoryPoints = victoryPoints;
-        this.victoryType = VictoryType.LOSE;
+        this.victoryType = victoryType;
+        this.science = science;
+        this.culture = culture;
+    }
+
+    //Constructor used only in DtoMapper
+    public GameStat(String accountUsername, int leaderboardId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+        this.accountUsername = accountUsername;
+        this.leaderboardId = leaderboardId;
+        this.name = name;
+        this.haveWon = haveWon;
+        this.victoryPoints = victoryPoints;
+        this.victoryType = victoryType;
         this.science = science;
         this.culture = culture;
     }
