@@ -2,6 +2,7 @@ package com.example.civilizationleaderboard.service;
 
 import com.example.civilizationleaderboard.DtoMapper;
 import com.example.civilizationleaderboard.dto.CreateGameStatDto;
+import com.example.civilizationleaderboard.dto.ViewGameStatDto;
 import com.example.civilizationleaderboard.model.GameStat;
 import com.example.civilizationleaderboard.repository.GameStatRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,11 @@ public class GameStatService {
     public GameStatService(GameStatRepository gameStatRepository, DtoMapper dtoMapper) {
         this.gameStatRepository = gameStatRepository;
         this.dtoMapper = dtoMapper;
+    }
+
+    public ViewGameStatDto getGameStat(int gameStatId) {
+        GameStat gameStat = gameStatRepository.getGameStat(gameStatId);
+        return dtoMapper.toGameStatDto(gameStat);
     }
 
     public void createGameStat(CreateGameStatDto gameStat) {
