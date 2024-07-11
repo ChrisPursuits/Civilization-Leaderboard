@@ -22,14 +22,15 @@ class JdbcLeaderboardTest {
 
     @Test
     void getLeaderboard() {
-        String expectedName = "leaderboardOne";
-        String expectedDescription = "descriptionOne";
+        List<GameStat> gameStatList = new ArrayList<>(List.of(
+                new GameStat(1, "john doe", 1, "game1", false, 521, VictoryType.LOSE, 111, 121),
+                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21))
+        );
+       Leaderboard expectedLeaderboard = new Leaderboard("leaderboardOne", "descriptionOne", gameStatList);
 
-        String actualName = jdbcLeaderboard.getLeaderboard(1).getName();
-        String actualDescription = jdbcLeaderboard.getLeaderboard(1).getDescription();
+       Leaderboard actualLeaderboard = jdbcLeaderboard.getLeaderboard(1);
 
-        assertEquals(expectedName, actualName);
-        assertEquals(expectedDescription, actualDescription);
+       assertEquals(expectedLeaderboard, actualLeaderboard);
     }
 
     @Test
