@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS invitations
 -- DATA INSERTION
 
 INSERT INTO users (username, password) value ('john doe', 123);
+INSERT INTO users (username, password) value ('Chris', 123);
 
 INSERT INTO leaderboard (name, description)
 VALUES ('leaderboardOne', 'descriptionOne');
