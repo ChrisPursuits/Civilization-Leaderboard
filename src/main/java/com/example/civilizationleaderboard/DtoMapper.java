@@ -1,9 +1,6 @@
 package com.example.civilizationleaderboard;
 
-import com.example.civilizationleaderboard.dto.CreateGameStatDto;
-import com.example.civilizationleaderboard.dto.CreateLeaderboardDto;
-import com.example.civilizationleaderboard.dto.ViewGameStatDto;
-import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
+import com.example.civilizationleaderboard.dto.*;
 import com.example.civilizationleaderboard.model.GameStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import org.springframework.stereotype.Component;
@@ -25,6 +22,20 @@ public class DtoMapper {
 
     public GameStat toGameStat(CreateGameStatDto gameStat) {
         return new GameStat(
+                gameStat.accountUsername(),
+                gameStat.leaderboardId(),
+                gameStat.name(),
+                gameStat.haveWon(),
+                gameStat.victoryPoints(),
+                gameStat.victoryType(),
+                gameStat.science(),
+                gameStat.culture()
+        );
+    }
+
+    public GameStat toGameStat(GameStatDto gameStat) {
+        return new GameStat(
+                gameStat.id(),
                 gameStat.accountUsername(),
                 gameStat.leaderboardId(),
                 gameStat.name(),
