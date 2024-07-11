@@ -63,7 +63,42 @@ public class JdbcGameStat implements GameStatRepository {
 
     @Override
     public boolean createGameStat(GameStat gameStatToCreate) {
-        return false;
+        boolean isCreated = false;
+
+        try (Connection connection = dataSource.getConnection()){
+            try {
+                connection.setAutoCommit(false);
+
+                String createGameStat = """
+                        INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                        """;
+                PreparedStatement preparedStatement = connection.prepareStatement(createGameStat);
+                preparedStatement.setString(1, gameStatToCreate.getAccountUsername());
+                preparedStatement.setInt(2, gameStatToCreate.getLeaderboardId());
+                preparedStatement.setString(3, gameStatToCreate.getName());
+                preparedStatement.setBoolean(4, gameStatToCreate.isHaveWon());
+                preparedStatement.setString(5, gameStatToCreate.getVictoryType().toString());
+                preparedStatement.setInt(6, gameStatToCreate.getVictoryPoints());
+                preparedStatement.setInt(7, gameStatToCreate.getScience());
+                preparedStatement.setInt(8, gameStatToCreate.getCulture());
+                int affectedRows = preparedStatement.executeUpdate();
+                isCreated = affectedRows > 0;
+
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            }catch (SQLException sqlException) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                sqlException.printStackTrace();
+            }
+
+        }catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return isCreated;
     }
 
     @Override
