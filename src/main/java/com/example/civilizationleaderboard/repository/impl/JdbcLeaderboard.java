@@ -147,18 +147,21 @@ public class JdbcLeaderboard implements LeaderboardRepository {
         //For that version we would want this method.
 
 //        boolean isAdded = false;
+//        int gameStatId = gameStat.getId();
 //
 //        try (Connection connection = dataSource.getConnection()){
 //            try{
 //                connection.setAutoCommit(false);
 //
 //                String addGameStatToLeaderboard = """
-//                        INSERT INTO game_stat (leaderboard_id)
-//                        VALUE (?)
+//                        UPDATE game_stat
+//                        SET leaderboard_id = ?
+//                        WHERE id = ?;
 //                        """;
 //
 //                PreparedStatement preparedStatement = connection.prepareStatement(addGameStatToLeaderboard);
 //                preparedStatement.setInt(1, leaderboardId);
+//                preparedStatement.setInt(2, gameStatId);
 //                int affectedRows = preparedStatement.executeUpdate();
 //                isAdded = affectedRows > 0;
 //
