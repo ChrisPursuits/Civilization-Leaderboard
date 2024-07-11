@@ -35,11 +35,9 @@ class JdbcLeaderboardTest {
     @Test
     void getGameStatsOnLeaderboard() {
         List<GameStat> expectedGameStatList = new ArrayList<>(List.of(
-                new GameStat("game1", 521, 111, 121),
-                new GameStat("game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21))
+                new GameStat(1, "john doe", 1, "game1", false, 521, VictoryType.LOSE, 111, 121),
+                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21))
         );
-
-
 
         List<GameStat> actualGameStatList = jdbcLeaderboard.getLeaderboard(1).getGameStatList();
 

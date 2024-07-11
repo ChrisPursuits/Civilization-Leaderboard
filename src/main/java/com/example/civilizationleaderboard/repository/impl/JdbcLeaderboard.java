@@ -45,6 +45,9 @@ public class JdbcLeaderboard implements LeaderboardRepository {
 
                 if (resultSet.getString(8) != null) {
                     GameStat gameStat = new GameStat(
+                            resultSet.getInt(5),
+                            resultSet.getString(6),
+                            resultSet.getInt(7),
                             resultSet.getString(8),
                             resultSet.getBoolean(9),
                             resultSet.getInt(11),
@@ -70,6 +73,9 @@ public class JdbcLeaderboard implements LeaderboardRepository {
         try {
             while (leaderboardRs.next()) {
                 GameStat gameStat = new GameStat(
+                        leaderboardRs.getInt(5),
+                        leaderboardRs.getString(6),
+                        leaderboardRs.getInt(7),
                         leaderboardRs.getString(8),
                         leaderboardRs.getBoolean(9),
                         leaderboardRs.getInt(11),
