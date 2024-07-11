@@ -33,6 +33,18 @@ public class DtoMapper {
         );
     }
 
+    public GameStat toPrivateGameStat(CreatePrivateGameStatDto gameStat) {
+        return new GameStat(
+                gameStat.accountUsername(),
+                gameStat.name(),
+                gameStat.haveWon(),
+                gameStat.victoryPoints(),
+                gameStat.victoryType(),
+                gameStat.science(),
+                gameStat.culture()
+        );
+    }
+
     public GameStat toGameStat(GameStatDto gameStat) {
         return new GameStat(
                 gameStat.id(),
@@ -52,6 +64,19 @@ public class DtoMapper {
                 gameStat.getId(),
                 gameStat.getAccountUsername(),
                 gameStat.getLeaderboardId(),
+                gameStat.getName(),
+                gameStat.isHaveWon(),
+                gameStat.getVictoryPoints(),
+                gameStat.getVictoryType(),
+                gameStat.getScience(),
+                gameStat.getCulture()
+        );
+    }
+
+    public PrivateGameStatDto toPrivateGameStatDto(GameStat gameStat) {
+        return new PrivateGameStatDto(
+                gameStat.getId(),
+                gameStat.getAccountUsername(),
                 gameStat.getName(),
                 gameStat.isHaveWon(),
                 gameStat.getVictoryPoints(),
