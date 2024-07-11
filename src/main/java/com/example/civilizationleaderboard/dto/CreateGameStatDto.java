@@ -2,7 +2,7 @@ package com.example.civilizationleaderboard.dto;
 
 import victoryTypeEnum.VictoryType;
 
-public record CreateGameStat(
+public record CreateGameStatDto(
         String name,
         boolean haveWon,
         int victoryPoints,
