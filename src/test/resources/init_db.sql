@@ -73,3 +73,7 @@ values ('john doe', 1, 'game1', 521, 111, 121);
 
 INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
 values ('john doe', 1, 'game2', true, 'SCIENTIFIC', 777, 1811, 21);
+
+-- PRIVATE GAMESTAT
+INSERT INTO game_stat (account_username, name, haveWon, victory_type, victory_points, science, culture)
+VALUES ('Chris', '11/07-2024', true, 'CULTURAL', 521, 111, 1452)
