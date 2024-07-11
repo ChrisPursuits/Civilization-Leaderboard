@@ -20,6 +20,7 @@ class JdbcLeaderboardTest {
     @Autowired
     private JdbcLeaderboard jdbcLeaderboard;
 
+    //CRUD OPERATIONS
     @Test
     void getLeaderboard() {
         List<GameStat> gameStatList = new ArrayList<>(List.of(
@@ -70,8 +71,18 @@ class JdbcLeaderboardTest {
     void editLeaderboard() {
     }
 
+    //OTHER FEATURES
     @Test
     void addGameStat() {
+        GameStat expectedGameStat = new GameStat(3, "Chris", "11/07-2024", true, 521, VictoryType.CULTURAL, 111, 1452);
+        GameStat privateGameStat = expectedGameStat;
+        int leaderboardId = 1;
+
+        jdbcLeaderboard.addGameStat(privateGameStat, leaderboardId);
+        List<GameStat> gameStatList = jdbcLeaderboard.getLeaderboard(leaderboardId).getGameStatList();
+        GameStat actualGameStat = gameStatList.get(2);
+
+        assertEquals(expectedGameStat, actualGameStat);
     }
 
     @Test
