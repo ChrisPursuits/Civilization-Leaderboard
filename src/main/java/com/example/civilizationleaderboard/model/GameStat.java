@@ -51,6 +51,30 @@ public class GameStat {
         this.culture = culture;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getAccountUsername() {
+        return accountUsername;
+    }
+
+    public void setAccountUsername(String accountUsername) {
+        this.accountUsername = accountUsername;
+    }
+
+    public int getLeaderboardId() {
+        return leaderboardId;
+    }
+
+    public void setLeaderboardId(int leaderboardId) {
+        this.leaderboardId = leaderboardId;
+    }
+
     public String getName() {
         return name;
     }
