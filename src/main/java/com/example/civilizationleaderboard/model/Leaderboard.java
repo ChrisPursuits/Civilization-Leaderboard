@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class Leaderboard {
 
+    private int leaderboardId;
     private String name;
     private String description;
     private boolean isPublic;
