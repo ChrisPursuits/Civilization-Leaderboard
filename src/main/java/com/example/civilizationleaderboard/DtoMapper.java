@@ -1,7 +1,9 @@
 package com.example.civilizationleaderboard;
 
+import com.example.civilizationleaderboard.dto.CreateGameStatDto;
 import com.example.civilizationleaderboard.dto.CreateLeaderboardDto;
 import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
+import com.example.civilizationleaderboard.model.GameStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,17 @@ public class DtoMapper {
                 leaderboard.getName(),
                 leaderboard.getDescription(),
                 leaderboard.getGameStatList()
+        );
+    }
+
+    public GameStat toGameStat(CreateGameStatDto gameStat) {
+        return new GameStat(
+                gameStat.name(),
+                gameStat.haveWon(),
+                gameStat.victoryPoints(),
+                gameStat.victoryType(),
+                gameStat.science(),
+                gameStat.culture()
         );
     }
 }
