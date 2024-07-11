@@ -29,6 +29,7 @@ public class GameStat {
         this.culture = culture;
     }
 
+    //TODO version PRIVATE LOG
     //Used for creating GameStat that is not part of any leaderboard. Meant to be used in future version where you can have a private log of all your games.
     //Precisely used in mapping of CreatePrivateGameStatDto
     public GameStat(String accountUsername, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
@@ -41,6 +42,7 @@ public class GameStat {
         this.culture = culture;
     }
 
+    //TODO version PRIVATE LOG
     //Used for creating GameStat that is not part of any leaderboard. Meant to be used in future version where you can have a private log of all your games.
     //Precisely used in mapping of PrivateGameStatDto (in get method?)
     public GameStat(int id, String accountUsername, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
