@@ -47,8 +47,11 @@ public class DtoMapper {
         );
     }
 
-    public ViewGameStatDto toGameStatDto(GameStat gameStat) {
-        return new ViewGameStatDto(
+    public GameStatDto toGameStatDto(GameStat gameStat) {
+        return new GameStatDto(
+                gameStat.getId(),
+                gameStat.getAccountUsername(),
+                gameStat.getLeaderboardId(),
                 gameStat.getName(),
                 gameStat.isHaveWon(),
                 gameStat.getVictoryPoints(),
