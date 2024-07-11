@@ -25,6 +25,8 @@ public class DtoMapper {
 
     public GameStat toGameStat(CreateGameStatDto gameStat) {
         return new GameStat(
+                gameStat.accountUsername(),
+                gameStat.leaderboardId(),
                 gameStat.name(),
                 gameStat.haveWon(),
                 gameStat.victoryPoints(),

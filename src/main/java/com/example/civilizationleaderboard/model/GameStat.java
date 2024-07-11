@@ -30,7 +30,9 @@ public class GameStat {
     }
 
     //Constructor used in DtoMapper
-    public GameStat(String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    public GameStat(String accountUsername, int leaderboardId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+        this.accountUsername = accountUsername;
+        this.leaderboardId = leaderboardId;
         this.name = name;
         this.haveWon = haveWon;
         this.victoryPoints = victoryPoints;
