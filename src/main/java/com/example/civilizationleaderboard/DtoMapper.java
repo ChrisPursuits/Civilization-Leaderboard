@@ -16,9 +16,9 @@ public class DtoMapper {
         return new ViewLeaderboardDto(
                 leaderboard.getName(),
                 leaderboard.getDescription(),
-                leaderboard.getGameStatList(),
-                leaderboard.getPlayers()
-        );
+                leaderboard.getPlayers(),
+                leaderboard.getGameStatList()
+                );
     }
 
     public GameStat toGameStat(CreateGameStatDto gameStat) {
