@@ -80,6 +80,10 @@ public class LeaderboardService {
         return players;
     }
 
+    public boolean deleteLeaderboard(int leaderboardId) {
+        return leaderboardRepository.deleteLeaderboard(leaderboardId);
+    }
+
     //FUTURE FEATURE
     public void addGameStatToLeaderboard(GameStatDto gameStatDto) {
         GameStat gameStat = dtoMapper.toGameStat(gameStatDto);
