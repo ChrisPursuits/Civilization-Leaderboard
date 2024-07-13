@@ -18,20 +18,23 @@ public class GameStatService {
         this.dtoMapper = dtoMapper;
     }
 
-    public GameStatDto getGameStat(int gameStatId) {
-        GameStat gameStat = gameStatRepository.getGameStat(gameStatId);
-        return dtoMapper.toGameStatDto(gameStat);
-    }
-
     public void createGameStat(CreateGameStatDto gameStat) {
         GameStat gameStatToCreate = dtoMapper.toGameStat(gameStat);
         gameStatRepository.createGameStat(gameStatToCreate);
     }
 
-    public GameStatDto editGameStats(GameStatDto gameStatDto) {
+    public GameStatDto getGameStat(int gameStatId) {
+        GameStat gameStat = gameStatRepository.getGameStat(gameStatId);
+        return dtoMapper.toGameStatDto(gameStat);
+    }
+
+    public GameStatDto editGameStat(GameStatDto gameStatDto) {
         GameStat gameStat = dtoMapper.toGameStat(gameStatDto);
         GameStat updatedGameStat = gameStatRepository.editGameStat(gameStat);
         return dtoMapper.toGameStatDto(updatedGameStat);
     }
 
+    public boolean deleteGameStat(int gameStatId) {
+        return gameStatRepository.deleteGameStat(gameStatId);
+    }
 }
