@@ -107,7 +107,46 @@ public class JdbcGameStat implements GameStatRepository {
     }
 
     @Override
-    public boolean editGameStat(int gameStatId, GameStat gameStat) {
-        return false;
+    public GameStat editGameStat(GameStat gameStat) {
+
+        try(Connection connection = dataSource.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+
+                String editGameStats = """
+                        UPDATE game_stat
+                        SET name = ?, haveWon = ?, victory_type = ?, victory_points = ?, science = ?, culture = ?
+                        WHERE id = ?;
+                        """;
+
+                PreparedStatement preparedStatement = connection.prepareStatement(editGameStats);
+                preparedStatement.setString(1, gameStat.getName());
+                preparedStatement.setBoolean(2, gameStat.isHaveWon());
+                preparedStatement.setString(3, gameStat.getVictoryType().toString());
+                preparedStatement.setInt(4, gameStat.getVictoryPoints());
+                preparedStatement.setInt(5, gameStat.getScience());
+                preparedStatement.setInt(6, gameStat.getCulture());
+                preparedStatement.setInt(7, gameStat.getId());
+                int affectedRows = preparedStatement.executeUpdate();
+
+                if (affectedRows > 0) {
+                    connection.commit();
+                    connection.setAutoCommit(true);
+                    return gameStat;
+                }
+
+                connection.rollback();
+                connection.setAutoCommit(true);
+
+            }catch (SQLException sqlException) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                sqlException.printStackTrace();
+            }
+        }catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return null;
     }
 }
