@@ -33,11 +33,12 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                     WHERE l.id = ?;
                     """;
             PreparedStatement preparedStatement = connection.prepareStatement(getLeaderboard);
-            preparedStatement.setLong(1, leaderboardId);
+            preparedStatement.setInt(1, leaderboardId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
                 leaderboard = new Leaderboard(
+                        resultSet.getInt(1),
                         resultSet.getString(2),
                         resultSet.getString(3)
                 );
@@ -173,8 +174,40 @@ public class JdbcLeaderboard implements LeaderboardRepository {
     }
 
     @Override
-    public boolean editLeaderboard(int leaderboardId) {
-        return false;
+    public Leaderboard editLeaderboard(Leaderboard leaderboardToEdit) {
+        Leaderboard editedLeaderboard = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+
+                String editLeaderboard = """
+                        UPDATE leaderboard
+                        SET name = ?, description = ?
+                        WHERE id = ?;
+                        """;
+
+                PreparedStatement preparedStatement = connection.prepareStatement(editLeaderboard);
+                preparedStatement.setString(1, leaderboardToEdit.getName());
+                preparedStatement.setString(2, leaderboardToEdit.getDescription());
+                preparedStatement.setInt(3, leaderboardToEdit.getId());
+                preparedStatement.executeUpdate();
+
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            } catch (SQLException sqlException) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                sqlException.printStackTrace();
+            }
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        editedLeaderboard = getLeaderboard(leaderboardToEdit.getId());
+        return editedLeaderboard;
     }
 
     @Override
