@@ -2,6 +2,7 @@ package com.example.civilizationleaderboard.service;
 
 import com.example.civilizationleaderboard.DtoMapper;
 import com.example.civilizationleaderboard.dto.CreateLeaderboardDto;
+import com.example.civilizationleaderboard.dto.EditLeaderboardDto;
 import com.example.civilizationleaderboard.dto.GameStatDto;
 import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
 import com.example.civilizationleaderboard.model.GameStat;
@@ -78,6 +79,12 @@ public class LeaderboardService {
         }
 
         return players;
+    }
+
+    public ViewLeaderboardDto editLeaderboard(EditLeaderboardDto editLeaderboardDto) {
+        Leaderboard leaderboardToEdit = dtoMapper.toLeaderboard(editLeaderboardDto);
+        Leaderboard editedLeaderboard = leaderboardRepository.editLeaderboard(leaderboardToEdit);
+        return dtoMapper.toViewLeaderboardDto(editedLeaderboard);
     }
 
     public boolean deleteLeaderboard(int leaderboardId) {
