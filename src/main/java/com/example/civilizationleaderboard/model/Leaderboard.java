@@ -78,24 +78,14 @@ public class Leaderboard {
     }
 
     @Override
-    public String toString() {
-        return "Leaderboard{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", isPublic=" + isPublic +
-                ", gameStatList=" + gameStatList +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Leaderboard that)) return false;
-        return isPublic == that.isPublic && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(gameStatList, that.gameStatList);
+        return leaderboardId == that.leaderboardId && isPublic == that.isPublic && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(players, that.players) && Objects.equals(gameStatList, that.gameStatList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, isPublic, gameStatList);
+        return Objects.hash(leaderboardId, name, description, isPublic, players, gameStatList);
     }
 }
