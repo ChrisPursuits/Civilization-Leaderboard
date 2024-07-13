@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Leaderboard {
 
-    private int leaderboardId;
+    private int id;
     private String name;
     private String description;
     private boolean isPublic;
@@ -29,12 +29,12 @@ public class Leaderboard {
         this.gameStatList = new ArrayList<>();
     }
 
-    public int getLeaderboardId() {
-        return leaderboardId;
+    public int getId() {
+        return id;
     }
 
-    public void setLeaderboardId(int leaderboardId) {
-        this.leaderboardId = leaderboardId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -81,11 +81,11 @@ public class Leaderboard {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Leaderboard that)) return false;
-        return leaderboardId == that.leaderboardId && isPublic == that.isPublic && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(players, that.players) && Objects.equals(gameStatList, that.gameStatList);
+        return id == that.id && isPublic == that.isPublic && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(players, that.players) && Objects.equals(gameStatList, that.gameStatList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(leaderboardId, name, description, isPublic, players, gameStatList);
+        return Objects.hash(id, name, description, isPublic, players, gameStatList);
     }
 }
