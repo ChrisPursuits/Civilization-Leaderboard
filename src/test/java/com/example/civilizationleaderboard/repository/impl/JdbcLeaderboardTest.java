@@ -21,6 +21,9 @@ class JdbcLeaderboardTest {
     @Autowired
     private JdbcLeaderboard jdbcLeaderboard;
 
+    @Autowired
+    private JdbcGameStat jdbcGameStat;
+
     //CRUD OPERATIONS
     @Test
     void getLeaderboard() {
@@ -73,11 +76,26 @@ class JdbcLeaderboardTest {
     }
 
     @Test
-    void deleteLeaderboard() {
+    void editLeaderboard() {
     }
 
     @Test
-    void editLeaderboard() {
+    void deleteLeaderboardReturnType() {
+        boolean expectedResult = true;
+
+        boolean actualResult = jdbcLeaderboard.deleteLeaderboard(1);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void checkDeletedLeaderboardGoneFromDatabase() {
+        Leaderboard expectedResult = null;
+
+        jdbcLeaderboard.deleteLeaderboard(1);
+        Leaderboard actualResult = jdbcLeaderboard.getLeaderboard(1);
+
+        assertEquals(expectedResult, actualResult);
     }
 
     //OTHER FEATURES
