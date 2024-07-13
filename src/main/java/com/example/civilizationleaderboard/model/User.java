@@ -1,5 +1,7 @@
 package com.example.civilizationleaderboard.model;
 
+import java.util.Objects;
+
 public class User {
 
     private String username;
@@ -16,6 +18,10 @@ public class User {
         this.totalVictoryPoints = totalVictoryPoints;
         this.totalScience = totalScience;
         this.totalCulture = totalCulture;
+    }
+
+    public User(String username) {
+        this.username = username;
     }
 
     public String getUsername() {
@@ -64,5 +70,17 @@ public class User {
 
     public void setTotalCulture(int totalCulture) {
         this.totalCulture = totalCulture;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return totalWins == user.totalWins && totalVictoryPoints == user.totalVictoryPoints && totalScience == user.totalScience && totalCulture == user.totalCulture && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, totalWins, totalVictoryPoints, totalScience, totalCulture);
     }
 }
