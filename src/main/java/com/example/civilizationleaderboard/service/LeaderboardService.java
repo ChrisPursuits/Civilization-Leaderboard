@@ -42,7 +42,7 @@ public class LeaderboardService {
     private Leaderboard sortLeaderboard(Leaderboard leaderboard) {
         List<User> players = summarizePlayerStats(leaderboard);
 
-        Collections.sort(players, new TotalWinsComparator().thenComparing(new TotalVictoryPointsComparator()));
+        Collections.sort(players, new TotalWinsComparator().thenComparing(new TotalVictoryPointsComparator()).reversed()); //reversed makes it sort in descending order. Without it, it would be accenting order
         leaderboard.setPlayers(players);
 
         return leaderboard;
@@ -52,17 +52,18 @@ public class LeaderboardService {
         List<User> players = new ArrayList<>();
 
         for (User player : leaderboard.getPlayers()) {
+            String playerUsername = player.getUsername();
             int totalWins = 0;
             int totalVictoryPoints = 0;
             int totalScience = 0;
             int totalCulture = 0;
 
             for (GameStat game : leaderboard.getGameStatList()) {
-                if (player.equals(game.getAccountUsername()) && game.isHaveWon()) {
+                if (playerUsername.equalsIgnoreCase(game.getAccountUsername()) && game.isHaveWon()) {
                     ++totalWins;
                 }
 
-                if (player.equals(game.getAccountUsername())) {
+                if (playerUsername.equalsIgnoreCase(game.getAccountUsername())) {
                     totalVictoryPoints += game.getVictoryPoints();
                     totalScience += game.getScience();
                     totalCulture += game.getCulture();
