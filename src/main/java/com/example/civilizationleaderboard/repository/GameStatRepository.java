@@ -7,5 +7,5 @@ public interface GameStatRepository {
     GameStat getGameStat(int gameStatId);
     boolean createGameStat(GameStat gameStatToCreate);
     boolean deleteGameStat(int gameStatId);
-    boolean editGameStat(int gameStatId, GameStat gameStat);
+    GameStat editGameStat(GameStat gameStat);
 }
