@@ -10,12 +10,14 @@ public class Leaderboard {
     private String name;
     private String description;
     private boolean isPublic;
+    private List<User> players;
     private List<GameStat> gameStatList;
 
-    public Leaderboard(String name, String description, List<GameStat> gameStatList) {
+    public Leaderboard(String name, String description, List<User> players, List<GameStat> gameStatList) {
         this.name = name;
         this.description = description;
         this.isPublic = true;
+        this.players = players;
         this.gameStatList = gameStatList;
     }
 
@@ -23,6 +25,7 @@ public class Leaderboard {
         this.name = name;
         this.description = description;
         this.isPublic = true;
+        this.players = new ArrayList<>();
         this.gameStatList = new ArrayList<>();
     }
 
