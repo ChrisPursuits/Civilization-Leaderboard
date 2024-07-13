@@ -41,5 +41,21 @@ class JdbcGameStatTest {
 
     @Test
     void editGameStat() {
+        GameStat expectedGameStats = new GameStat(3, "Chris", 1, "12/07-2024", true, 777, VictoryType.CULTURAL, 756, 642);
+        GameStat gameStatsToUpdate = expectedGameStats;
+
+        GameStat actualGameStats = jdbcGameStat.editGameStat(gameStatsToUpdate);
+
+        assertEquals(expectedGameStats, actualGameStats);
+    }
+
+    @Test
+    void attemptEditGameStatsThatDoesNotExist() {
+        GameStat expectedGameStats = new GameStat(0, "Chris", 1, "12/07-2024", true, 777, VictoryType.CULTURAL, 756, 642);
+        GameStat gameStatsToUpdate = expectedGameStats;
+
+        GameStat actualGameStats = jdbcGameStat.editGameStat(gameStatsToUpdate);
+
+        assertNull(actualGameStats);
     }
 }
