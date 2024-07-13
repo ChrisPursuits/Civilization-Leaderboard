@@ -2,6 +2,7 @@ package com.example.civilizationleaderboard.repository.impl;
 
 import com.example.civilizationleaderboard.model.GameStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
+import com.example.civilizationleaderboard.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,11 +24,17 @@ class JdbcLeaderboardTest {
     //CRUD OPERATIONS
     @Test
     void getLeaderboard() {
+        List<User> players = new ArrayList<>(List.of(
+                new User("john doe"),
+                new User("Mikkel"))
+        );
         List<GameStat> gameStatList = new ArrayList<>(List.of(
                 new GameStat(1, "john doe", 1, "game1", false, 521, VictoryType.LOSE, 111, 121),
-                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21))
+                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
+                new GameStat(3, "Mikkel", 1, "game1", true, 777, VictoryType.CULTURAL, 231, 321),
+                new GameStat(4, "Mikkel", 1, "game2", true, 417,VictoryType.DOMINATION, 425, 412))
         );
-       Leaderboard expectedLeaderboard = new Leaderboard("leaderboardOne", "descriptionOne", gameStatList);
+       Leaderboard expectedLeaderboard = new Leaderboard("leaderboardOne", "descriptionOne", players, gameStatList);
 
        Leaderboard actualLeaderboard = jdbcLeaderboard.getLeaderboard(1);
 
@@ -38,7 +45,9 @@ class JdbcLeaderboardTest {
     void getGameStatsOnLeaderboard() {
         List<GameStat> expectedGameStatList = new ArrayList<>(List.of(
                 new GameStat(1, "john doe", 1, "game1", false, 521, VictoryType.LOSE, 111, 121),
-                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21))
+                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
+                new GameStat(3, "Mikkel", 1, "game1", true, 777, VictoryType.CULTURAL, 231, 321),
+                new GameStat(4, "Mikkel", 1, "game2", true, 417,VictoryType.DOMINATION, 425, 412))
         );
 
         List<GameStat> actualGameStatList = jdbcLeaderboard.getLeaderboard(1).getGameStatList();
@@ -74,13 +83,13 @@ class JdbcLeaderboardTest {
     //OTHER FEATURES
     @Test
     void addGameStat() {
-        GameStat expectedGameStat = new GameStat(3, "Chris", "11/07-2024", true, 521, VictoryType.CULTURAL, 111, 1452);
+        GameStat expectedGameStat = new GameStat(5, "Chris", "11/07-2024", true, 521, VictoryType.CULTURAL, 111, 1452);
         GameStat privateGameStat = expectedGameStat;
         int leaderboardId = 1;
 
         jdbcLeaderboard.addGameStat(privateGameStat, leaderboardId);
         List<GameStat> gameStatList = jdbcLeaderboard.getLeaderboard(leaderboardId).getGameStatList();
-        GameStat actualGameStat = gameStatList.get(2);
+        GameStat actualGameStat = gameStatList.get(4);
 
         assertEquals(expectedGameStat, actualGameStat);
     }
