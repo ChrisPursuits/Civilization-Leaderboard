@@ -13,7 +13,8 @@ public class Leaderboard {
     private List<User> players;
     private List<GameStat> gameStatList;
 
-    public Leaderboard(String name, String description, List<User> players, List<GameStat> gameStatList) {
+    public Leaderboard(int id, String name, String description, List<User> players, List<GameStat> gameStatList) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.isPublic = true;
@@ -21,6 +22,16 @@ public class Leaderboard {
         this.gameStatList = gameStatList;
     }
 
+    public Leaderboard(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.isPublic = true;
+        this.players = new ArrayList<>();
+        this.gameStatList = new ArrayList<>();
+    }
+
+    //USED WHEN CREATING NEW LEADERBOARD IN MAPPING CLASS
     public Leaderboard(String name, String description) {
         this.name = name;
         this.description = description;
@@ -87,5 +98,17 @@ public class Leaderboard {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description, isPublic, players, gameStatList);
+    }
+
+    @Override
+    public String toString() {
+        return "Leaderboard{" +
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", description='" + description + '\'' +
+               ", isPublic=" + isPublic +
+               ", players=" + players +
+               ", gameStatList=" + gameStatList +
+               '}';
     }
 }
