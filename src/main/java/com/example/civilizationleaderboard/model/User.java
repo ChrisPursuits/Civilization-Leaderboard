@@ -10,6 +10,9 @@ public class User {
     private int totalVictoryPoints;
     private int totalScience;
     private int totalCulture;
+    private int firstPlaceCount;
+    private int secondPlaceCount;
+    private int thirdPlaceCount;
 
     public User(String username, int totalWins, int totalVictoryPoints, int totalScience, int totalCulture) {
         this.username = username;
@@ -69,6 +72,30 @@ public class User {
 
     public void setTotalCulture(int totalCulture) {
         this.totalCulture = totalCulture;
+    }
+
+    public int getFirstPlaceCount() {
+        return firstPlaceCount;
+    }
+
+    public void setFirstPlaceCount(int firstPlaceCount) {
+        this.firstPlaceCount = firstPlaceCount;
+    }
+
+    public int getSecondPlaceCount() {
+        return secondPlaceCount;
+    }
+
+    public void setSecondPlaceCount(int secondPlaceCount) {
+        this.secondPlaceCount = secondPlaceCount;
+    }
+
+    public int getThirdPlaceCount() {
+        return thirdPlaceCount;
+    }
+
+    public void setThirdPlaceCount(int thirdPlaceCount) {
+        this.thirdPlaceCount = thirdPlaceCount;
     }
 
     @Override
