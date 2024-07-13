@@ -27,4 +27,11 @@ public class GameStatService {
         GameStat gameStatToCreate = dtoMapper.toGameStat(gameStat);
         gameStatRepository.createGameStat(gameStatToCreate);
     }
+
+    public GameStatDto editGameStats(GameStatDto gameStatDto) {
+        GameStat gameStat = dtoMapper.toGameStat(gameStatDto);
+        GameStat updatedGameStat = gameStatRepository.editGameStat(gameStat);
+        return dtoMapper.toGameStatDto(updatedGameStat);
+    }
+
 }
