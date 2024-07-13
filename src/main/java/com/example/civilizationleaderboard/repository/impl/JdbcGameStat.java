@@ -21,47 +21,6 @@ public class JdbcGameStat implements GameStatRepository {
     }
 
     @Override
-    public GameStat getGameStat(int gameStatId) {
-        GameStat gameStat = null;
-
-        try (Connection connection = dataSource.getConnection()){
-            try {
-                connection.setAutoCommit(false);
-
-                String getGameStat = "SELECT * FROM game_stat WHERE id = ?";
-                PreparedStatement preparedStatement = connection.prepareStatement(getGameStat);
-                preparedStatement.setInt(1, gameStatId);
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                if (resultSet.next()) {
-                    gameStat = new GameStat(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getInt(3),
-                            resultSet.getString(4),
-                            resultSet.getBoolean(5),
-                            resultSet.getInt(7),
-                            VictoryType.valueOf(resultSet.getString(6)),
-                            resultSet.getInt(8),
-                            resultSet.getInt(9)
-                    );
-                }
-
-                connection.commit();
-                connection.setAutoCommit(true);
-
-            } catch (SQLException sqlException) {
-                connection.rollback();
-                connection.setAutoCommit(true);
-            }
-        }catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-
-        return gameStat;
-    }
-
-    @Override
     public boolean createGameStat(GameStat gameStatToCreate) {
         boolean isCreated = false;
 
@@ -102,8 +61,44 @@ public class JdbcGameStat implements GameStatRepository {
     }
 
     @Override
-    public boolean deleteGameStat(int gameStatId) {
-        return false;
+    public GameStat getGameStat(int gameStatId) {
+        GameStat gameStat = null;
+
+        try (Connection connection = dataSource.getConnection()){
+            try {
+                connection.setAutoCommit(false);
+
+                String getGameStat = "SELECT * FROM game_stat WHERE id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(getGameStat);
+                preparedStatement.setInt(1, gameStatId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                if (resultSet.next()) {
+                    gameStat = new GameStat(
+                            resultSet.getInt(1),
+                            resultSet.getString(2),
+                            resultSet.getInt(3),
+                            resultSet.getString(4),
+                            resultSet.getBoolean(5),
+                            resultSet.getInt(7),
+                            VictoryType.valueOf(resultSet.getString(6)),
+                            resultSet.getInt(8),
+                            resultSet.getInt(9)
+                    );
+                }
+
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            } catch (SQLException sqlException) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+            }
+        }catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return gameStat;
     }
 
     @Override
@@ -148,5 +143,38 @@ public class JdbcGameStat implements GameStatRepository {
         }
 
         return null;
+    }
+
+    @Override
+    public boolean deleteGameStat(int gameStatId) {
+        boolean isDeleted = false;
+
+        try(Connection connection = dataSource.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+
+                String deleteGameStat = """
+                        DELETE FROM game_stat
+                        WHERE id = ?;
+                        """;
+
+                PreparedStatement preparedStatement = connection.prepareStatement(deleteGameStat);
+                preparedStatement.setInt(1, gameStatId);
+                int affectedRows = preparedStatement.executeUpdate();
+                isDeleted = affectedRows > 0;
+
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            }catch (SQLException sqlException) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                sqlException.printStackTrace();
+            }
+        }catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return isDeleted;
     }
 }
