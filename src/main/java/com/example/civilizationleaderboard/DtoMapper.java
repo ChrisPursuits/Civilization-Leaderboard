@@ -16,7 +16,8 @@ public class DtoMapper {
         return new ViewLeaderboardDto(
                 leaderboard.getName(),
                 leaderboard.getDescription(),
-                leaderboard.getGameStatList()
+                leaderboard.getGameStatList(),
+                leaderboard.getPlayers()
         );
     }
 
