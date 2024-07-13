@@ -29,6 +29,14 @@ public class Leaderboard {
         this.gameStatList = new ArrayList<>();
     }
 
+    public int getLeaderboardId() {
+        return leaderboardId;
+    }
+
+    public void setLeaderboardId(int leaderboardId) {
+        this.leaderboardId = leaderboardId;
+    }
+
     public String getName() {
         return name;
     }
@@ -51,6 +59,14 @@ public class Leaderboard {
 
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public List<User> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<User> players) {
+        this.players = players;
     }
 
     public List<GameStat> getGameStatList() {
