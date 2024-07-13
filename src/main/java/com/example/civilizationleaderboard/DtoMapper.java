@@ -12,6 +12,10 @@ public class DtoMapper {
         return new Leaderboard(dto.name(), dto.description());
     }
 
+    public Leaderboard toLeaderboard(EditLeaderboardDto dto) {
+        return new Leaderboard(dto.name(), dto.description());
+    }
+
     public ViewLeaderboardDto toViewLeaderboardDto(Leaderboard leaderboard) {
         return new ViewLeaderboardDto(
                 leaderboard.getName(),
