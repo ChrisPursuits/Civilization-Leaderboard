@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS game_stat
     science          LONG        NOT NULL,
     culture          LONG        NOT NULL,
 
-    FOREIGN KEY (account_username) REFERENCES users (username),
-    FOREIGN KEY (leaderboard_id) REFERENCES leaderboard (id)
+    FOREIGN KEY (account_username) REFERENCES users (username) ON DELETE CASCADE,
+    FOREIGN KEY (leaderboard_id) REFERENCES leaderboard (id) ON DELETE CASCADE
 );
 
 
