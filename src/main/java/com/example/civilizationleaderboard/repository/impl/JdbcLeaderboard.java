@@ -173,13 +173,41 @@ public class JdbcLeaderboard implements LeaderboardRepository {
     }
 
     @Override
-    public boolean deleteLeaderboard(int leaderboardId) {
+    public boolean editLeaderboard(int leaderboardId) {
         return false;
     }
 
     @Override
-    public boolean editLeaderboard(int leaderboardId) {
-        return false;
+    public boolean deleteLeaderboard(int leaderboardId) {
+        boolean isDeleted = false;
+
+        try (Connection connection = dataSource.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+
+                String deleteLeaderboard = """
+                        DELETE FROM leaderboard
+                        WHERE id = ?;
+                        """;
+                PreparedStatement preparedStatement = connection.prepareStatement(deleteLeaderboard);
+                preparedStatement.setInt(1, leaderboardId);
+                int affectedRows = preparedStatement.executeUpdate();
+                isDeleted = affectedRows > 0;
+
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            } catch (SQLException sqlException) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                sqlException.printStackTrace();
+            }
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return isDeleted;
     }
 
     //OTHER
