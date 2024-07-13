@@ -11,9 +11,8 @@ public class User {
     private int totalScience;
     private int totalCulture;
 
-    public User(String username, String password, int totalWins, int totalVictoryPoints, int totalScience, int totalCulture) {
+    public User(String username, int totalWins, int totalVictoryPoints, int totalScience, int totalCulture) {
         this.username = username;
-        this.password = password;
         this.totalWins = totalWins;
         this.totalVictoryPoints = totalVictoryPoints;
         this.totalScience = totalScience;
