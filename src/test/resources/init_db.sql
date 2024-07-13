@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS invitations
 
 INSERT INTO users (username, password) value ('john doe', 123);
 INSERT INTO users (username, password) value ('Chris', 123);
+INSERT INTO users (username, password) value ('Mikkel', 123);
 
 INSERT INTO leaderboard (name, description)
 VALUES ('leaderboardOne', 'descriptionOne');
@@ -73,6 +74,12 @@ values ('john doe', 1, 'game1', 521, 111, 121);
 
 INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
 values ('john doe', 1, 'game2', true, 'SCIENTIFIC', 777, 1811, 21);
+
+INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
+values ('Mikkel', 1, 'game1', true, 'CULTURAL', 777, 231, 321);
+
+INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
+values ('Mikkel', 1, 'game2', true, 'DOMINATION', 417, 425, 412);
 
 -- PRIVATE GAMESTAT
 INSERT INTO game_stat (account_username, name, haveWon, victory_type, victory_points, science, culture)
