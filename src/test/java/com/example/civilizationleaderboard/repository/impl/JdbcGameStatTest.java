@@ -36,10 +36,6 @@ class JdbcGameStatTest {
     }
 
     @Test
-    void deleteGameStat() {
-    }
-
-    @Test
     void editGameStat() {
         GameStat expectedGameStats = new GameStat(3, "Chris", 1, "12/07-2024", true, 777, VictoryType.CULTURAL, 756, 642);
         GameStat gameStatsToUpdate = expectedGameStats;
@@ -57,5 +53,24 @@ class JdbcGameStatTest {
         GameStat actualGameStats = jdbcGameStat.editGameStat(gameStatsToUpdate);
 
         assertNull(actualGameStats);
+    }
+
+    @Test
+    void deleteGameStatTestForReturnType() {
+        boolean expectedResult = true;
+
+        boolean actualResult = jdbcGameStat.deleteGameStat(1);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void deleteGameStatTestForActualDeletion() {
+        GameStat expectedResult = null;
+
+        jdbcGameStat.deleteGameStat(1);
+        GameStat actualResult = jdbcGameStat.getGameStat(1);
+
+        assertEquals(expectedResult, actualResult);
     }
 }
