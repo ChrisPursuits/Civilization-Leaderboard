@@ -1,5 +1,6 @@
 package com.example.civilizationleaderboard.repository;
 
+import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
 import com.example.civilizationleaderboard.model.GameStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
 
@@ -12,7 +13,7 @@ public interface LeaderboardRepository {
     List<Leaderboard> getAllLeaderboards(String username);
     boolean createLeaderboard(Leaderboard leaderboard);
     boolean deleteLeaderboard(int leaderboardId);
-    boolean editLeaderboard(int leaderboardId);
+    Leaderboard editLeaderboard(Leaderboard leaderboardToEdit);
 
     //Other
     boolean addGameStat(GameStat gameStat, int leaderboardId);
