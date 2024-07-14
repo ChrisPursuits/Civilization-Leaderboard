@@ -1,38 +1,35 @@
 package com.example.civilizationleaderboard.repository.impl;
 
 import com.example.civilizationleaderboard.model.CivilizationStat;
-import com.example.civilizationleaderboard.repository.GameStatRepository;
+import com.example.civilizationleaderboard.repository.CivilizationStatRepository;
 import org.springframework.stereotype.Repository;
 import victoryTypeEnum.VictoryType;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Repository
-public class JdbcGameStat implements GameStatRepository {
+public class JdbcCivilizationStat implements CivilizationStatRepository {
 
     private DataSource dataSource;
 
-    public JdbcGameStat(DataSource dataSource) {
+    public JdbcCivilizationStat(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public boolean createGameStat(CivilizationStat civilizationStatToCreate) {
-        boolean isCreated = false;
+    public CivilizationStat createCivStat(CivilizationStat civilizationStatToCreate) {
+        CivilizationStat createdCivStat = null;
 
         try (Connection connection = dataSource.getConnection()){
             try {
                 connection.setAutoCommit(false);
 
-                String createGameStat = """
-                        INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
+                String createCivStat = """
+                        INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?);
                         """;
-                PreparedStatement preparedStatement = connection.prepareStatement(createGameStat);
+                PreparedStatement preparedStatement = connection.prepareStatement(createCivStat, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, civilizationStatToCreate.getAccountUsername());
                 preparedStatement.setInt(2, civilizationStatToCreate.getGameId());
                 preparedStatement.setString(3, civilizationStatToCreate.getName());
@@ -41,8 +38,14 @@ public class JdbcGameStat implements GameStatRepository {
                 preparedStatement.setInt(6, civilizationStatToCreate.getVictoryPoints());
                 preparedStatement.setInt(7, civilizationStatToCreate.getScience());
                 preparedStatement.setInt(8, civilizationStatToCreate.getCulture());
-                int affectedRows = preparedStatement.executeUpdate();
-                isCreated = affectedRows > 0;
+                preparedStatement.executeUpdate();
+
+                ResultSet genereatedKeys = preparedStatement.getGeneratedKeys();
+                if (genereatedKeys.next()) {
+                    int civStatId = genereatedKeys.getInt(1);
+
+                    createdCivStat = getCivilizationStat(civStatId);
+                }
 
                 connection.commit();
                 connection.setAutoCommit(true);
@@ -57,20 +60,20 @@ public class JdbcGameStat implements GameStatRepository {
             sqlException.printStackTrace();
         }
 
-        return isCreated;
+        return createdCivStat;
     }
 
     @Override
-    public CivilizationStat getGameStat(int gameStatId) {
+    public CivilizationStat getCivilizationStat(int civStatId) {
         CivilizationStat civilizationStat = null;
 
         try (Connection connection = dataSource.getConnection()){
             try {
                 connection.setAutoCommit(false);
 
-                String getGameStat = "SELECT * FROM game_stat WHERE id = ?";
+                String getGameStat = "SELECT * FROM civilization_stat WHERE id = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(getGameStat);
-                preparedStatement.setInt(1, gameStatId);
+                preparedStatement.setInt(1, civStatId);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
@@ -102,14 +105,14 @@ public class JdbcGameStat implements GameStatRepository {
     }
 
     @Override
-    public CivilizationStat editGameStat(CivilizationStat civilizationStat) {
+    public CivilizationStat editCivStat(CivilizationStat civilizationStat) {
 
         try(Connection connection = dataSource.getConnection()) {
             try {
                 connection.setAutoCommit(false);
 
                 String editGameStats = """
-                        UPDATE game_stat
+                        UPDATE civilization_stat
                         SET name = ?, haveWon = ?, victory_type = ?, victory_points = ?, science = ?, culture = ?
                         WHERE id = ?;
                         """;
@@ -146,7 +149,7 @@ public class JdbcGameStat implements GameStatRepository {
     }
 
     @Override
-    public boolean deleteGameStat(int gameStatId) {
+    public boolean deleteCivStat(int gameStatId) {
         boolean isDeleted = false;
 
         try(Connection connection = dataSource.getConnection()) {
@@ -154,7 +157,7 @@ public class JdbcGameStat implements GameStatRepository {
                 connection.setAutoCommit(false);
 
                 String deleteGameStat = """
-                        DELETE FROM game_stat
+                        DELETE FROM civilization_stat
                         WHERE id = ?;
                         """;
 

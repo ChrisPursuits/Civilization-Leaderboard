@@ -23,7 +23,7 @@ class JdbcLeaderboardTest {
     private JdbcLeaderboard jdbcLeaderboard;
 
     @Autowired
-    private JdbcGameStat jdbcGameStat;
+    private JdbcCivilizationStat jdbcCivilizationStat;
 
     //CRUD OPERATIONS
     @Test
@@ -110,10 +110,10 @@ class JdbcLeaderboardTest {
 //    void addGameStat() {
 //        CivilizationStat expectedCivilizationStat = new CivilizationStat(5, "Chris", "11/07-2024", true, 521, VictoryType.CULTURAL, 111, 1452);
 //        CivilizationStat privateCivilizationStat = expectedCivilizationStat;
-//        int leaderboardId = 1;
+//        int gameId = 1;
 //
-//        jdbcLeaderboard.addGameStat(privateCivilizationStat, leaderboardId);
-//        List<CivilizationStat> civilizationStatList = jdbcLeaderboard.getLeaderboard(leaderboardId).getGameStatList();
+//        jdbcLeaderboard.addGameStat(privateCivilizationStat, gameId);
+//        List<CivilizationStat> civilizationStatList = jdbcLeaderboard.getLeaderboard(gameId).getGameStatList();
 //        CivilizationStat actualCivilizationStat = civilizationStatList.get(4);
 //
 //        assertEquals(expectedCivilizationStat, actualCivilizationStat);

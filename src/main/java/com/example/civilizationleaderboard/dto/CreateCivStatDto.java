@@ -2,10 +2,9 @@ package com.example.civilizationleaderboard.dto;
 
 import victoryTypeEnum.VictoryType;
 
-public record GameStatDto(
-        int id,
+public record CreateCivStatDto(
         String accountUsername,
-        int leaderboardId,
+        int gameId,
         String name,
         boolean haveWon,
         int victoryPoints,

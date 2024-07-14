@@ -139,7 +139,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
     private List<User> getAllPlayersInLeaderboard(int leaderboardId) {
         List<User> playerList = new ArrayList<>();
 
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             String getAllPlayersInLeaderboard = """
                     SELECT DISTINCT account_username
                     FROM leaderboard l
@@ -157,12 +157,13 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 User player = new User(resultSet.getString(1));
                 playerList.add(player);
             }
-        }catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
 
         return playerList;
     }
+
     @Override
     public List<Leaderboard> getAllLeaderboards(String username) {
         return null;
@@ -185,23 +186,10 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 preparedStatement.executeUpdate();
 
                 ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-                if (generatedKeys.next()){
+                if (generatedKeys.next()) {
                     int leaderboardId = generatedKeys.getInt(1);
 
-                    String getCreatedLeaderboard = """
-                            SELECT * FROM leaderboard WHERE id = ?
-                            """;
-
-                    PreparedStatement ps = connection.prepareStatement(getCreatedLeaderboard);
-                    ps.setInt(1, leaderboardId);
-                    ResultSet resultSet = ps.executeQuery();
-                    resultSet.next();
-
-                    createdLeaderboard = new Leaderboard(
-                            leaderboardId,
-                            resultSet.getString(2),
-                            resultSet.getString(3)
-                    );
+                    createdLeaderboard = getCreatedLeaderboard(connection, leaderboardId);
                 }
 
                 connection.commit();
@@ -212,6 +200,32 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 connection.setAutoCommit(true);
                 sqlException.printStackTrace();
             }
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return createdLeaderboard;
+    }
+
+    private Leaderboard getCreatedLeaderboard(Connection connection, int leaderboardId) {
+        Leaderboard createdLeaderboard = null;
+
+        try {
+            String getCreatedLeaderboard = """
+                    SELECT * FROM leaderboard WHERE id = ?
+                    """;
+
+            PreparedStatement ps = connection.prepareStatement(getCreatedLeaderboard);
+            ps.setInt(1, leaderboardId);
+            ResultSet resultSet = ps.executeQuery();
+            resultSet.next();
+
+            createdLeaderboard = new Leaderboard(
+                    leaderboardId,
+                    resultSet.getString(2),
+                    resultSet.getString(3)
+            );
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -311,7 +325,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
 //                        """;
 //
 //                PreparedStatement preparedStatement = connection.prepareStatement(addGameStatToLeaderboard);
-//                preparedStatement.setInt(1, leaderboardId);
+//                preparedStatement.setInt(1, gameId);
 //                preparedStatement.setInt(2, gameStatId);
 //                int affectedRows = preparedStatement.executeUpdate();
 //                isAdded = affectedRows > 0;

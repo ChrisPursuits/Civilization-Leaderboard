@@ -25,16 +25,30 @@ public class DtoMapper {
                 );
     }
 
-    public CivilizationStat toGameStat(CreateGameStatDto gameStat) {
+    public CivilizationStat toCivStat(CreateCivStatDto civStat) {
         return new CivilizationStat(
-                gameStat.accountUsername(),
-                gameStat.leaderboardId(),
-                gameStat.name(),
-                gameStat.haveWon(),
-                gameStat.victoryPoints(),
-                gameStat.victoryType(),
-                gameStat.science(),
-                gameStat.culture()
+                civStat.accountUsername(),
+                civStat.gameId(),
+                civStat.name(),
+                civStat.haveWon(),
+                civStat.victoryPoints(),
+                civStat.victoryType(),
+                civStat.science(),
+                civStat.culture()
+        );
+    }
+
+    public CivilizationStat toCivStat(CivStatDto civStat) {
+        return new CivilizationStat(
+                civStat.id(),
+                civStat.accountUsername(),
+                civStat.gameId(),
+                civStat.name(),
+                civStat.haveWon(),
+                civStat.victoryPoints(),
+                civStat.victoryType(),
+                civStat.science(),
+                civStat.culture()
         );
     }
 
@@ -50,22 +64,8 @@ public class DtoMapper {
         );
     }
 
-    public CivilizationStat toGameStat(GameStatDto gameStat) {
-        return new CivilizationStat(
-                gameStat.id(),
-                gameStat.accountUsername(),
-                gameStat.leaderboardId(),
-                gameStat.name(),
-                gameStat.haveWon(),
-                gameStat.victoryPoints(),
-                gameStat.victoryType(),
-                gameStat.science(),
-                gameStat.culture()
-        );
-    }
-
-    public GameStatDto toGameStatDto(CivilizationStat civilizationStat) {
-        return new GameStatDto(
+    public CivStatDto toCivStatDto(CivilizationStat civilizationStat) {
+        return new CivStatDto(
                 civilizationStat.getId(),
                 civilizationStat.getAccountUsername(),
                 civilizationStat.getGameId(),

@@ -3,19 +3,12 @@ package com.example.civilizationleaderboard.service;
 import com.example.civilizationleaderboard.DtoMapper;
 import com.example.civilizationleaderboard.dto.CreateLeaderboardDto;
 import com.example.civilizationleaderboard.dto.EditLeaderboardDto;
-import com.example.civilizationleaderboard.dto.GameStatDto;
+import com.example.civilizationleaderboard.dto.CivStatDto;
 import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
 import com.example.civilizationleaderboard.model.CivilizationStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
-import com.example.civilizationleaderboard.model.User;
 import com.example.civilizationleaderboard.repository.LeaderboardRepository;
-import comparator.TotalVictoryPointsComparator;
-import comparator.TotalWinsComparator;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class LeaderboardService {
@@ -33,8 +26,8 @@ public class LeaderboardService {
         leaderboardRepository.createLeaderboard(leaderboard);
     }
 
-//    public ViewLeaderboardDto getLeaderboard(int leaderboardId) {
-//        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(leaderboardId);
+//    public ViewLeaderboardDto getLeaderboard(int gameId) {
+//        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(gameId);
 //        Leaderboard sortedLeaderboard = sortLeaderboard(leaderboard);
 //
 //        return dtoMapper.toViewLeaderboardDto(sortedLeaderboard);
@@ -92,8 +85,8 @@ public class LeaderboardService {
     }
 
     //FUTURE FEATURE
-    public void addGameStatToLeaderboard(GameStatDto gameStatDto) {
-        CivilizationStat civilizationStat = dtoMapper.toGameStat(gameStatDto);
+    public void addGameStatToLeaderboard(CivStatDto civStatDto) {
+        CivilizationStat civilizationStat = dtoMapper.toCivStat(civStatDto);
         int leaderboardId = civilizationStat.getGameId();
         leaderboardRepository.addGameStat(civilizationStat, leaderboardId);
     }

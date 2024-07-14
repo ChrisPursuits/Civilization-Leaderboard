@@ -14,33 +14,33 @@ import static org.junit.jupiter.api.Assertions.*;
 class JdbcCivilizationStatTest {
 
     @Autowired
-    private JdbcGameStat jdbcGameStat;
+    private JdbcCivilizationStat jdbcCivilizationStat;
 
     @Test
-    void getGameStat() {
-        CivilizationStat expectedCivilizationStat = new CivilizationStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21);
-        CivilizationStat actualCivilizationStat = jdbcGameStat.getGameStat(2);
+    void getCivilizationStatsOnId() {
+        CivilizationStat expectedCivilizationStat = new CivilizationStat(2, "john doe", 1, "China", true, 777, VictoryType.SCIENTIFIC, 1811, 21);
+        CivilizationStat actualCivilizationStat = jdbcCivilizationStat.getCivilizationStat(2);
 
         assertEquals(expectedCivilizationStat, actualCivilizationStat);
     }
 
     @Test
     void createGameStat() {
-        CivilizationStat expectedCivilizationStat = new CivilizationStat(4, "Chris", 1, "11/07-2024", true, 456, VictoryType.DOMINATION, 756, 642);
+        CivilizationStat expectedCivilizationStat = new CivilizationStat(5, "Chris", 1, "Maui", true, 456, VictoryType.DOMINATION, 756, 642);
         CivilizationStat civilizationStat = expectedCivilizationStat;
 
-        jdbcGameStat.createGameStat(civilizationStat);
-        CivilizationStat actualCivilizationStat = jdbcGameStat.getGameStat(4);
+        jdbcCivilizationStat.createCivStat(civilizationStat);
+        CivilizationStat actualCivilizationStat = jdbcCivilizationStat.getCivilizationStat(5);
 
         assertEquals(expectedCivilizationStat, actualCivilizationStat);
     }
 
     @Test
     void editGameStat() {
-        CivilizationStat expectedCivilizationStats = new CivilizationStat(3, "Chris", 1, "12/07-2024", true, 777, VictoryType.CULTURAL, 756, 642);
+        CivilizationStat expectedCivilizationStats = new CivilizationStat(4, "EDITED Mikkel", 1, "Spain", true, 417, VictoryType.DOMINATION, 425, 412);
         CivilizationStat civilizationStatsToUpdate = expectedCivilizationStats;
 
-        CivilizationStat actualCivilizationStats = jdbcGameStat.editGameStat(civilizationStatsToUpdate);
+        CivilizationStat actualCivilizationStats = jdbcCivilizationStat.editCivStat(civilizationStatsToUpdate);
 
         assertEquals(expectedCivilizationStats, actualCivilizationStats);
     }
@@ -50,7 +50,7 @@ class JdbcCivilizationStatTest {
         CivilizationStat expectedCivilizationStats = new CivilizationStat(0, "Chris", 1, "12/07-2024", true, 777, VictoryType.CULTURAL, 756, 642);
         CivilizationStat civilizationStatsToUpdate = expectedCivilizationStats;
 
-        CivilizationStat actualCivilizationStats = jdbcGameStat.editGameStat(civilizationStatsToUpdate);
+        CivilizationStat actualCivilizationStats = jdbcCivilizationStat.editCivStat(civilizationStatsToUpdate);
 
         assertNull(actualCivilizationStats);
     }
@@ -59,7 +59,7 @@ class JdbcCivilizationStatTest {
     void deleteGameStatTestForReturnType() {
         boolean expectedResult = true;
 
-        boolean actualResult = jdbcGameStat.deleteGameStat(1);
+        boolean actualResult = jdbcCivilizationStat.deleteCivStat(1);
 
         assertEquals(expectedResult, actualResult);
     }
@@ -68,8 +68,8 @@ class JdbcCivilizationStatTest {
     void deleteGameStatTestForActualDeletion() {
         CivilizationStat expectedResult = null;
 
-        jdbcGameStat.deleteGameStat(1);
-        CivilizationStat actualResult = jdbcGameStat.getGameStat(1);
+        jdbcCivilizationStat.deleteCivStat(1);
+        CivilizationStat actualResult = jdbcCivilizationStat.getCivilizationStat(1);
 
         assertEquals(expectedResult, actualResult);
     }
