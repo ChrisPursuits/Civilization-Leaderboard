@@ -1,6 +1,6 @@
 package com.example.civilizationleaderboard.repository.impl;
 
-import com.example.civilizationleaderboard.model.GameStat;
+import com.example.civilizationleaderboard.model.CivilizationStat;
 import com.example.civilizationleaderboard.repository.GameStatRepository;
 import org.springframework.stereotype.Repository;
 import victoryTypeEnum.VictoryType;
@@ -21,7 +21,7 @@ public class JdbcGameStat implements GameStatRepository {
     }
 
     @Override
-    public boolean createGameStat(GameStat gameStatToCreate) {
+    public boolean createGameStat(CivilizationStat civilizationStatToCreate) {
         boolean isCreated = false;
 
         try (Connection connection = dataSource.getConnection()){
@@ -33,14 +33,14 @@ public class JdbcGameStat implements GameStatRepository {
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?);
                         """;
                 PreparedStatement preparedStatement = connection.prepareStatement(createGameStat);
-                preparedStatement.setString(1, gameStatToCreate.getAccountUsername());
-                preparedStatement.setInt(2, gameStatToCreate.getLeaderboardId());
-                preparedStatement.setString(3, gameStatToCreate.getName());
-                preparedStatement.setBoolean(4, gameStatToCreate.isHaveWon());
-                preparedStatement.setString(5, gameStatToCreate.getVictoryType().toString());
-                preparedStatement.setInt(6, gameStatToCreate.getVictoryPoints());
-                preparedStatement.setInt(7, gameStatToCreate.getScience());
-                preparedStatement.setInt(8, gameStatToCreate.getCulture());
+                preparedStatement.setString(1, civilizationStatToCreate.getAccountUsername());
+                preparedStatement.setInt(2, civilizationStatToCreate.getGameId());
+                preparedStatement.setString(3, civilizationStatToCreate.getName());
+                preparedStatement.setBoolean(4, civilizationStatToCreate.isHaveWon());
+                preparedStatement.setString(5, civilizationStatToCreate.getVictoryType().toString());
+                preparedStatement.setInt(6, civilizationStatToCreate.getVictoryPoints());
+                preparedStatement.setInt(7, civilizationStatToCreate.getScience());
+                preparedStatement.setInt(8, civilizationStatToCreate.getCulture());
                 int affectedRows = preparedStatement.executeUpdate();
                 isCreated = affectedRows > 0;
 
@@ -61,8 +61,8 @@ public class JdbcGameStat implements GameStatRepository {
     }
 
     @Override
-    public GameStat getGameStat(int gameStatId) {
-        GameStat gameStat = null;
+    public CivilizationStat getGameStat(int gameStatId) {
+        CivilizationStat civilizationStat = null;
 
         try (Connection connection = dataSource.getConnection()){
             try {
@@ -74,7 +74,7 @@ public class JdbcGameStat implements GameStatRepository {
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 if (resultSet.next()) {
-                    gameStat = new GameStat(
+                    civilizationStat = new CivilizationStat(
                             resultSet.getInt(1),
                             resultSet.getString(2),
                             resultSet.getInt(3),
@@ -98,11 +98,11 @@ public class JdbcGameStat implements GameStatRepository {
             sqlException.printStackTrace();
         }
 
-        return gameStat;
+        return civilizationStat;
     }
 
     @Override
-    public GameStat editGameStat(GameStat gameStat) {
+    public CivilizationStat editGameStat(CivilizationStat civilizationStat) {
 
         try(Connection connection = dataSource.getConnection()) {
             try {
@@ -115,19 +115,19 @@ public class JdbcGameStat implements GameStatRepository {
                         """;
 
                 PreparedStatement preparedStatement = connection.prepareStatement(editGameStats);
-                preparedStatement.setString(1, gameStat.getName());
-                preparedStatement.setBoolean(2, gameStat.isHaveWon());
-                preparedStatement.setString(3, gameStat.getVictoryType().toString());
-                preparedStatement.setInt(4, gameStat.getVictoryPoints());
-                preparedStatement.setInt(5, gameStat.getScience());
-                preparedStatement.setInt(6, gameStat.getCulture());
-                preparedStatement.setInt(7, gameStat.getId());
+                preparedStatement.setString(1, civilizationStat.getName());
+                preparedStatement.setBoolean(2, civilizationStat.isHaveWon());
+                preparedStatement.setString(3, civilizationStat.getVictoryType().toString());
+                preparedStatement.setInt(4, civilizationStat.getVictoryPoints());
+                preparedStatement.setInt(5, civilizationStat.getScience());
+                preparedStatement.setInt(6, civilizationStat.getCulture());
+                preparedStatement.setInt(7, civilizationStat.getId());
                 int affectedRows = preparedStatement.executeUpdate();
 
                 if (affectedRows > 0) {
                     connection.commit();
                     connection.setAutoCommit(true);
-                    return gameStat;
+                    return civilizationStat;
                 }
 
                 connection.rollback();

@@ -29,12 +29,19 @@ CREATE TABLE IF NOT EXISTS leaderboard
     isPublic    BOOLEAN DEFAULT TRUE
 );
 
+CREATE TABLE IF NOT EXISTS game
+(
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    name           VARCHAR(50) NOT NULL,
+    leaderboard_id INT,
+    FOREIGN KEY (leaderboard_id) REFERENCES leaderboard (id) ON DELETE CASCADE
+);
 
-CREATE TABLE IF NOT EXISTS game_stat
+CREATE TABLE IF NOT EXISTS civilization_stat
 (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     account_username VARCHAR(50) NOT NULL,
-    leaderboard_id   INT,
+    game_id          INT,
     name             VARCHAR(50) NOT NULL,
     haveWon          boolean              DEFAULT FALSE,
     victory_type     VARCHAR(20) NOT NULL DEFAULT 'LOSE',
@@ -43,7 +50,7 @@ CREATE TABLE IF NOT EXISTS game_stat
     culture          LONG        NOT NULL,
 
     FOREIGN KEY (account_username) REFERENCES users (username) ON DELETE CASCADE,
-    FOREIGN KEY (leaderboard_id) REFERENCES leaderboard (id) ON DELETE CASCADE
+    FOREIGN KEY (game_id) REFERENCES game (id) ON DELETE CASCADE
 );
 
 
@@ -69,18 +76,14 @@ INSERT INTO users (username, password) value ('Mikkel', 123);
 INSERT INTO leaderboard (name, description)
 VALUES ('leaderboardOne', 'descriptionOne');
 
-INSERT INTO game_stat (account_username, leaderboard_id, name, victory_points, science, culture)
-values ('john doe', 1, 'game1', 521, 111, 121);
+INSERT INTO game (name, leaderboard_id)
+    VALUE ('Game: 1', 1);
 
-INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
-values ('john doe', 1, 'game2', true, 'SCIENTIFIC', 777, 1811, 21);
-
-INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
-values ('Mikkel', 1, 'game1', true, 'CULTURAL', 777, 231, 321);
-
-INSERT INTO game_stat (account_username, leaderboard_id, name, haveWon, victory_type, victory_points, science, culture)
-values ('Mikkel', 1, 'game2', true, 'DOMINATION', 417, 425, 412);
-
--- PRIVATE GAMESTAT
-INSERT INTO game_stat (account_username, name, haveWon, victory_type, victory_points, science, culture)
-VALUES ('Chris', '11/07-2024', true, 'CULTURAL', 521, 111, 1452)
+INSERT INTO civilization_stat (account_username, game_id, name, victory_points, science, culture)
+VALUES ('john doe', 1, 'Portugal', 521, 111, 121);
+INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
+VALUES ('john doe', 1, 'China', true, 'SCIENTIFIC', 777, 1811, 21);
+INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
+VALUES ('Mikkel', 1, 'Japan', true, 'CULTURAL', 777, 231, 321);
+INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
+VALUES ('Mikkel', 1, 'Spain', true, 'DOMINATION', 417, 425, 412);

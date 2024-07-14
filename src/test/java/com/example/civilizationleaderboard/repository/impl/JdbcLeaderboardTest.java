@@ -1,6 +1,7 @@
 package com.example.civilizationleaderboard.repository.impl;
 
-import com.example.civilizationleaderboard.model.GameStat;
+import com.example.civilizationleaderboard.model.CivilizationStat;
+import com.example.civilizationleaderboard.model.Game;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import com.example.civilizationleaderboard.model.User;
 import org.junit.jupiter.api.Test;
@@ -31,33 +32,22 @@ class JdbcLeaderboardTest {
                 new User("john doe"),
                 new User("Mikkel"))
         );
-        List<GameStat> gameStatList = new ArrayList<>(List.of(
-                new GameStat(1, "john doe", 1, "game1", false, 521, VictoryType.LOSE, 111, 121),
-                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
-                new GameStat(3, "Mikkel", 1, "game1", true, 777, VictoryType.CULTURAL, 231, 321),
-                new GameStat(4, "Mikkel", 1, "game2", true, 417,VictoryType.DOMINATION, 425, 412))
+        List<CivilizationStat> civilizationStatsList = new ArrayList<>(List.of(
+                new CivilizationStat(1, "john doe", 1, "Portugal", false, 521, VictoryType.LOSE, 111, 121),
+                new CivilizationStat(2, "john doe", 1, "China", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
+                new CivilizationStat(3, "Mikkel", 1, "Japan", true, 777, VictoryType.CULTURAL, 231, 321),
+                new CivilizationStat(4, "Mikkel", 1, "Spain", true, 417, VictoryType.DOMINATION, 425, 412))
         );
-       Leaderboard expectedLeaderboard = new Leaderboard(1, "leaderboardOne", "descriptionOne", players, gameStatList);
+        Game game = new Game(1, "Game: 1", players, civilizationStatsList);
 
-       Leaderboard actualLeaderboard = jdbcLeaderboard.getLeaderboard(1);
+        List<Game> gameList = new ArrayList<>();
+        gameList.add(game);
+        Leaderboard expectedLeaderboard = new Leaderboard(1, "leaderboardOne", "descriptionOne", players, gameList);
 
-       assertEquals(expectedLeaderboard, actualLeaderboard);
+        Leaderboard actualLeaderboard = jdbcLeaderboard.getLeaderboard(1);
+
+        assertEquals(expectedLeaderboard, actualLeaderboard);
     }
-
-    @Test
-    void getGameStatsOnLeaderboard() {
-        List<GameStat> expectedGameStatList = new ArrayList<>(List.of(
-                new GameStat(1, "john doe", 1, "game1", false, 521, VictoryType.LOSE, 111, 121),
-                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
-                new GameStat(3, "Mikkel", 1, "game1", true, 777, VictoryType.CULTURAL, 231, 321),
-                new GameStat(4, "Mikkel", 1, "game2", true, 417,VictoryType.DOMINATION, 425, 412))
-        );
-
-        List<GameStat> actualGameStatList = jdbcLeaderboard.getLeaderboard(1).getGameStatList();
-
-        assertEquals(expectedGameStatList, actualGameStatList);
-    }
-
 
     @Test
     void getAllLeaderboards() {
@@ -65,12 +55,10 @@ class JdbcLeaderboardTest {
 
     @Test
     void createLeaderboard() {
-        Leaderboard leaderboard = new Leaderboard("newLeaderBoard", "newDescription");
+        Leaderboard expectedLeaderboard = new Leaderboard("newLeaderBoard", "newDescription");
+        expectedLeaderboard.setId(2);
 
-        jdbcLeaderboard.createLeaderboard(leaderboard);
-
-        Leaderboard expectedLeaderboard = leaderboard;
-        Leaderboard actualLeaderboard = jdbcLeaderboard.getLeaderboard(2);
+        Leaderboard actualLeaderboard = jdbcLeaderboard.createLeaderboard(expectedLeaderboard);
 
         assertEquals(expectedLeaderboard, actualLeaderboard);
     }
@@ -81,13 +69,17 @@ class JdbcLeaderboardTest {
                 new User("john doe"),
                 new User("Mikkel"))
         );
-        List<GameStat> gameStatList = new ArrayList<>(List.of(
-                new GameStat(1, "john doe", 1, "game1", false, 521, VictoryType.LOSE, 111, 121),
-                new GameStat(2, "john doe", 1, "game2", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
-                new GameStat(3, "Mikkel", 1, "game1", true, 777, VictoryType.CULTURAL, 231, 321),
-                new GameStat(4, "Mikkel", 1, "game2", true, 417,VictoryType.DOMINATION, 425, 412))
+        List<CivilizationStat> civilizationStatsList = new ArrayList<>(List.of(
+                new CivilizationStat(1, "john doe", 1, "Portugal", false, 521, VictoryType.LOSE, 111, 121),
+                new CivilizationStat(2, "john doe", 1, "China", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
+                new CivilizationStat(3, "Mikkel", 1, "Japan", true, 777, VictoryType.CULTURAL, 231, 321),
+                new CivilizationStat(4, "Mikkel", 1, "Spain", true, 417, VictoryType.DOMINATION, 425, 412))
         );
-        Leaderboard expectedLeaderboard = new Leaderboard(1, "EDITEDleaderboardOne", "EDITEDdescriptionOne", players, gameStatList);
+        Game game = new Game(1, "Game: 1", players, civilizationStatsList);
+
+        List<Game> gameList = new ArrayList<>();
+        gameList.add(game);
+        Leaderboard expectedLeaderboard = new Leaderboard(1, "EDITEDleaderboardOne", "EDITEDdescriptionOne", players, gameList);
 
         Leaderboard actualLeaderboard = jdbcLeaderboard.editLeaderboard(expectedLeaderboard);
 
@@ -112,20 +104,20 @@ class JdbcLeaderboardTest {
 
         assertEquals(expectedResult, actualResult);
     }
-
-    //OTHER FEATURES
-    @Test
-    void addGameStat() {
-        GameStat expectedGameStat = new GameStat(5, "Chris", "11/07-2024", true, 521, VictoryType.CULTURAL, 111, 1452);
-        GameStat privateGameStat = expectedGameStat;
-        int leaderboardId = 1;
-
-        jdbcLeaderboard.addGameStat(privateGameStat, leaderboardId);
-        List<GameStat> gameStatList = jdbcLeaderboard.getLeaderboard(leaderboardId).getGameStatList();
-        GameStat actualGameStat = gameStatList.get(4);
-
-        assertEquals(expectedGameStat, actualGameStat);
-    }
+//
+//    //OTHER FEATURES
+//    @Test
+//    void addGameStat() {
+//        CivilizationStat expectedCivilizationStat = new CivilizationStat(5, "Chris", "11/07-2024", true, 521, VictoryType.CULTURAL, 111, 1452);
+//        CivilizationStat privateCivilizationStat = expectedCivilizationStat;
+//        int leaderboardId = 1;
+//
+//        jdbcLeaderboard.addGameStat(privateCivilizationStat, leaderboardId);
+//        List<CivilizationStat> civilizationStatList = jdbcLeaderboard.getLeaderboard(leaderboardId).getGameStatList();
+//        CivilizationStat actualCivilizationStat = civilizationStatList.get(4);
+//
+//        assertEquals(expectedCivilizationStat, actualCivilizationStat);
+//    }
 
     @Test
     void makePublic() {

@@ -3,7 +3,7 @@ package com.example.civilizationleaderboard.service;
 import com.example.civilizationleaderboard.DtoMapper;
 import com.example.civilizationleaderboard.dto.CreateGameStatDto;
 import com.example.civilizationleaderboard.dto.GameStatDto;
-import com.example.civilizationleaderboard.model.GameStat;
+import com.example.civilizationleaderboard.model.CivilizationStat;
 import com.example.civilizationleaderboard.repository.GameStatRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +19,19 @@ public class GameStatService {
     }
 
     public void createGameStat(CreateGameStatDto gameStat) {
-        GameStat gameStatToCreate = dtoMapper.toGameStat(gameStat);
-        gameStatRepository.createGameStat(gameStatToCreate);
+        CivilizationStat civilizationStatToCreate = dtoMapper.toGameStat(gameStat);
+        gameStatRepository.createGameStat(civilizationStatToCreate);
     }
 
     public GameStatDto getGameStat(int gameStatId) {
-        GameStat gameStat = gameStatRepository.getGameStat(gameStatId);
-        return dtoMapper.toGameStatDto(gameStat);
+        CivilizationStat civilizationStat = gameStatRepository.getGameStat(gameStatId);
+        return dtoMapper.toGameStatDto(civilizationStat);
     }
 
     public GameStatDto editGameStat(GameStatDto gameStatDto) {
-        GameStat gameStat = dtoMapper.toGameStat(gameStatDto);
-        GameStat updatedGameStat = gameStatRepository.editGameStat(gameStat);
-        return dtoMapper.toGameStatDto(updatedGameStat);
+        CivilizationStat civilizationStat = dtoMapper.toGameStat(gameStatDto);
+        CivilizationStat updatedCivilizationStat = gameStatRepository.editGameStat(civilizationStat);
+        return dtoMapper.toGameStatDto(updatedCivilizationStat);
     }
 
     public boolean deleteGameStat(int gameStatId) {

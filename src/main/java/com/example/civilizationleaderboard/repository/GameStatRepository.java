@@ -1,11 +1,11 @@
 package com.example.civilizationleaderboard.repository;
 
-import com.example.civilizationleaderboard.model.GameStat;
+import com.example.civilizationleaderboard.model.CivilizationStat;
 
 public interface GameStatRepository {
 
-    GameStat getGameStat(int gameStatId);
-    boolean createGameStat(GameStat gameStatToCreate);
+    CivilizationStat getGameStat(int gameStatId);
+    boolean createGameStat(CivilizationStat civilizationStatToCreate);
     boolean deleteGameStat(int gameStatId);
-    GameStat editGameStat(GameStat gameStat);
+    CivilizationStat editGameStat(CivilizationStat civilizationStat);
 }

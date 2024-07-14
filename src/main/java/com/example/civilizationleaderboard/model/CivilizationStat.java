@@ -4,11 +4,11 @@ import victoryTypeEnum.VictoryType;
 
 import java.util.Objects;
 
-public class GameStat {
+public class CivilizationStat {
 
     private int id;
     private String accountUsername;
-    private int leaderboardId;
+    private int gameId;
     private String name;
     private boolean haveWon;
     private int victoryPoints;
@@ -17,10 +17,10 @@ public class GameStat {
     private int culture;
 
     //Constructor used in impl, DtoMapper and test.
-    public GameStat(int id, String accountUsername, int leaderboardId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    public CivilizationStat(int id, String accountUsername, int gameId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
         this.id = id;
         this.accountUsername = accountUsername;
-        this.leaderboardId = leaderboardId;
+        this.gameId = gameId;
         this.name = name;
         this.haveWon = haveWon;
         this.victoryPoints = victoryPoints;
@@ -32,7 +32,7 @@ public class GameStat {
     //TODO version PRIVATE LOG
     //Used for creating GameStat that is not part of any leaderboard. Meant to be used in future version where you can have a private log of all your games.
     //Precisely used in mapping of CreatePrivateGameStatDto
-    public GameStat(String accountUsername, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    public CivilizationStat(String accountUsername, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
         this.accountUsername = accountUsername;
         this.name = name;
         this.haveWon = haveWon;
@@ -45,7 +45,7 @@ public class GameStat {
     //TODO version PRIVATE LOG
     //Used for creating GameStat that is not part of any leaderboard. Meant to be used in future version where you can have a private log of all your games.
     //Precisely used in mapping of PrivateGameStatDto (in get method?)
-    public GameStat(int id, String accountUsername, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    public CivilizationStat(int id, String accountUsername, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
         this.id = id;
         this.accountUsername = accountUsername;
         this.name = name;
@@ -57,9 +57,9 @@ public class GameStat {
     }
 
     //Constructor used only in DtoMapper
-    public GameStat(String accountUsername, int leaderboardId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    public CivilizationStat(String accountUsername, int gameId, String name, boolean haveWon, int victoryPoints, VictoryType victoryType, int science, int culture) {
         this.accountUsername = accountUsername;
-        this.leaderboardId = leaderboardId;
+        this.gameId = gameId;
         this.name = name;
         this.haveWon = haveWon;
         this.victoryPoints = victoryPoints;
@@ -84,12 +84,12 @@ public class GameStat {
         this.accountUsername = accountUsername;
     }
 
-    public int getLeaderboardId() {
-        return leaderboardId;
+    public int getGameId() {
+        return gameId;
     }
 
-    public void setLeaderboardId(int leaderboardId) {
-        this.leaderboardId = leaderboardId;
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 
     public String getName() {
@@ -143,12 +143,27 @@ public class GameStat {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GameStat gameStat)) return false;
-        return haveWon == gameStat.haveWon && victoryPoints == gameStat.victoryPoints && science == gameStat.science && culture == gameStat.culture && Objects.equals(name, gameStat.name) && victoryType == gameStat.victoryType;
+        if (!(o instanceof CivilizationStat that)) return false;
+        return id == that.id && gameId == that.gameId && haveWon == that.haveWon && victoryPoints == that.victoryPoints && science == that.science && culture == that.culture && Objects.equals(accountUsername, that.accountUsername) && Objects.equals(name, that.name) && victoryType == that.victoryType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, haveWon, victoryPoints, victoryType, science, culture);
+        return Objects.hash(id, accountUsername, gameId, name, haveWon, victoryPoints, victoryType, science, culture);
+    }
+
+    @Override
+    public String toString() {
+        return "CivilizationStat{" +
+               "id=" + id +
+               ", accountUsername='" + accountUsername + '\'' +
+               ", gameId=" + gameId +
+               ", name='" + name + '\'' +
+               ", haveWon=" + haveWon +
+               ", victoryPoints=" + victoryPoints +
+               ", victoryType=" + victoryType +
+               ", science=" + science +
+               ", culture=" + culture +
+               '}';
     }
 }

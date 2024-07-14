@@ -102,11 +102,26 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return totalWins == user.totalWins && totalVictoryPoints == user.totalVictoryPoints && totalScience == user.totalScience && totalCulture == user.totalCulture && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return totalWins == user.totalWins && totalVictoryPoints == user.totalVictoryPoints && totalScience == user.totalScience && totalCulture == user.totalCulture && firstPlaceCount == user.firstPlaceCount && secondPlaceCount == user.secondPlaceCount && thirdPlaceCount == user.thirdPlaceCount && Objects.equals(username, user.username) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, totalWins, totalVictoryPoints, totalScience, totalCulture);
+        return Objects.hash(username, password, totalWins, totalVictoryPoints, totalScience, totalCulture, firstPlaceCount, secondPlaceCount, thirdPlaceCount);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+               "username='" + username + '\'' +
+               ", password='" + password + '\'' +
+               ", totalWins=" + totalWins +
+               ", totalVictoryPoints=" + totalVictoryPoints +
+               ", totalScience=" + totalScience +
+               ", totalCulture=" + totalCulture +
+               ", firstPlaceCount=" + firstPlaceCount +
+               ", secondPlaceCount=" + secondPlaceCount +
+               ", thirdPlaceCount=" + thirdPlaceCount +
+               '}';
     }
 }

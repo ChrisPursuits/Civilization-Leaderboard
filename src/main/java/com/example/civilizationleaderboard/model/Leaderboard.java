@@ -11,15 +11,15 @@ public class Leaderboard {
     private String description;
     private boolean isPublic;
     private List<User> players;
-    private List<GameStat> gameStatList;
+    private List<Game> gameList;
 
-    public Leaderboard(int id, String name, String description, List<User> players, List<GameStat> gameStatList) {
+    public Leaderboard(int id, String name, String description, List<User> players, List<Game> gameList) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.isPublic = true;
         this.players = players;
-        this.gameStatList = gameStatList;
+        this.gameList = gameList;
     }
 
     public Leaderboard(int id, String name, String description) {
@@ -28,7 +28,7 @@ public class Leaderboard {
         this.description = description;
         this.isPublic = true;
         this.players = new ArrayList<>();
-        this.gameStatList = new ArrayList<>();
+        this.gameList = new ArrayList<>();
     }
 
     //USED WHEN CREATING NEW LEADERBOARD IN MAPPING CLASS
@@ -37,7 +37,7 @@ public class Leaderboard {
         this.description = description;
         this.isPublic = true;
         this.players = new ArrayList<>();
-        this.gameStatList = new ArrayList<>();
+        this.gameList = new ArrayList<>();
     }
 
     public int getId() {
@@ -80,24 +80,24 @@ public class Leaderboard {
         this.players = players;
     }
 
-    public List<GameStat> getGameStatList() {
-        return gameStatList;
+    public List<Game> getGameList() {
+        return gameList;
     }
 
-    public void setGameStatList(List<GameStat> gameStatList) {
-        this.gameStatList = gameStatList;
+    public void setGameList(List<Game> gameList) {
+        this.gameList = gameList;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Leaderboard that)) return false;
-        return id == that.id && isPublic == that.isPublic && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(players, that.players) && Objects.equals(gameStatList, that.gameStatList);
+        return id == that.id && isPublic == that.isPublic && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(players, that.players) && Objects.equals(gameList, that.gameList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, isPublic, players, gameStatList);
+        return Objects.hash(id, name, description, isPublic, players, gameList);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class Leaderboard {
                ", description='" + description + '\'' +
                ", isPublic=" + isPublic +
                ", players=" + players +
-               ", gameStatList=" + gameStatList +
+               ", gameList=" + gameList +
                '}';
     }
 }

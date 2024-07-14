@@ -5,7 +5,7 @@ import com.example.civilizationleaderboard.dto.CreateLeaderboardDto;
 import com.example.civilizationleaderboard.dto.EditLeaderboardDto;
 import com.example.civilizationleaderboard.dto.GameStatDto;
 import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
-import com.example.civilizationleaderboard.model.GameStat;
+import com.example.civilizationleaderboard.model.CivilizationStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import com.example.civilizationleaderboard.model.User;
 import com.example.civilizationleaderboard.repository.LeaderboardRepository;
@@ -33,53 +33,53 @@ public class LeaderboardService {
         leaderboardRepository.createLeaderboard(leaderboard);
     }
 
-    public ViewLeaderboardDto getLeaderboard(int leaderboardId) {
-        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(leaderboardId);
-        Leaderboard sortedLeaderboard = sortLeaderboard(leaderboard);
+//    public ViewLeaderboardDto getLeaderboard(int leaderboardId) {
+//        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(leaderboardId);
+//        Leaderboard sortedLeaderboard = sortLeaderboard(leaderboard);
+//
+//        return dtoMapper.toViewLeaderboardDto(sortedLeaderboard);
+//    }
 
-        return dtoMapper.toViewLeaderboardDto(sortedLeaderboard);
-    }
+//    private Leaderboard sortLeaderboard(Leaderboard leaderboard) {
+//        List<User> players = summarizePlayerStats(leaderboard);
+//
+//        Collections.sort(players, new TotalWinsComparator().thenComparing(new TotalVictoryPointsComparator()).reversed()); //reversed makes it sort in descending order. Without it, it would be accenting order
+//        leaderboard.setPlayers(players);
+//
+//        return leaderboard;
+//    }
 
-    private Leaderboard sortLeaderboard(Leaderboard leaderboard) {
-        List<User> players = summarizePlayerStats(leaderboard);
-
-        Collections.sort(players, new TotalWinsComparator().thenComparing(new TotalVictoryPointsComparator()).reversed()); //reversed makes it sort in descending order. Without it, it would be accenting order
-        leaderboard.setPlayers(players);
-
-        return leaderboard;
-    }
-
-    private List<User> summarizePlayerStats(Leaderboard leaderboard) {
-        List<User> players = new ArrayList<>();
-
-        for (User player : leaderboard.getPlayers()) {
-            String playerUsername = player.getUsername();
-            int totalWins = 0;
-            int totalVictoryPoints = 0;
-            int totalScience = 0;
-            int totalCulture = 0;
-
-            for (GameStat game : leaderboard.getGameStatList()) {
-                if (playerUsername.equalsIgnoreCase(game.getAccountUsername()) && game.isHaveWon()) {
-                    ++totalWins;
-                }
-
-                if (playerUsername.equalsIgnoreCase(game.getAccountUsername())) {
-                    totalVictoryPoints += game.getVictoryPoints();
-                    totalScience += game.getScience();
-                    totalCulture += game.getCulture();
-                }
-            }
-
-            player.setTotalWins(totalWins);
-            player.setTotalVictoryPoints(totalVictoryPoints);
-            player.setTotalScience(totalScience);
-            player.setTotalCulture(totalCulture);
-            players.add(player);
-        }
-
-        return players;
-    }
+//    private List<User> summarizePlayerStats(Leaderboard leaderboard) {
+//        List<User> players = new ArrayList<>();
+//
+//        for (User player : leaderboard.getPlayers()) {
+//            String playerUsername = player.getUsername();
+//            int totalWins = 0;
+//            int totalVictoryPoints = 0;
+//            int totalScience = 0;
+//            int totalCulture = 0;
+//
+//            for (CivilizationStat game : leaderboard.getGameStatList()) {
+//                if (playerUsername.equalsIgnoreCase(game.getAccountUsername()) && game.isHaveWon()) {
+//                    ++totalWins;
+//                }
+//
+//                if (playerUsername.equalsIgnoreCase(game.getAccountUsername())) {
+//                    totalVictoryPoints += game.getVictoryPoints();
+//                    totalScience += game.getScience();
+//                    totalCulture += game.getCulture();
+//                }
+//            }
+//
+//            player.setTotalWins(totalWins);
+//            player.setTotalVictoryPoints(totalVictoryPoints);
+//            player.setTotalScience(totalScience);
+//            player.setTotalCulture(totalCulture);
+//            players.add(player);
+//        }
+//
+//        return players;
+//    }
 
     public ViewLeaderboardDto editLeaderboard(EditLeaderboardDto editLeaderboardDto) {
         Leaderboard leaderboardToEdit = dtoMapper.toLeaderboard(editLeaderboardDto);
@@ -93,8 +93,8 @@ public class LeaderboardService {
 
     //FUTURE FEATURE
     public void addGameStatToLeaderboard(GameStatDto gameStatDto) {
-        GameStat gameStat = dtoMapper.toGameStat(gameStatDto);
-        int leaderboardId = gameStat.getLeaderboardId();
-        leaderboardRepository.addGameStat(gameStat, leaderboardId);
+        CivilizationStat civilizationStat = dtoMapper.toGameStat(gameStatDto);
+        int leaderboardId = civilizationStat.getGameId();
+        leaderboardRepository.addGameStat(civilizationStat, leaderboardId);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.civilizationleaderboard.repository.impl;
 
-import com.example.civilizationleaderboard.model.GameStat;
+import com.example.civilizationleaderboard.model.CivilizationStat;
+import com.example.civilizationleaderboard.model.Game;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import com.example.civilizationleaderboard.model.User;
 import com.example.civilizationleaderboard.repository.LeaderboardRepository;
@@ -25,11 +26,11 @@ public class JdbcLeaderboard implements LeaderboardRepository {
     @Override
     public Leaderboard getLeaderboard(int leaderboardId) {
         Leaderboard leaderboard = null;
+        List<Game> gameList;
 
         try (Connection connection = dataSource.getConnection()) {
             String getLeaderboard = """
                     SELECT * FROM leaderboard l
-                    LEFT JOIN game_stat gs ON gs.leaderboard_id = l.id
                     WHERE l.id = ?;
                     """;
             PreparedStatement preparedStatement = connection.prepareStatement(getLeaderboard);
@@ -43,15 +44,9 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                         resultSet.getString(3)
                 );
 
-                if (resultSet.getString(6) != null) {
-                    List<GameStat> gameStatList = getGameStatListFromLeaderboard(resultSet);
-                    List<User> players = getAllPlayersFromLeaderboard(leaderboardId);
-
-                    leaderboard.setPlayers(players);
-                    leaderboard.setGameStatList(gameStatList);
-
-                    return leaderboard;
-                }
+                gameList = getAllGamesInLeaderboard(leaderboardId);
+                leaderboard.setGameList(gameList);
+                leaderboard.setPlayers(getAllPlayersInLeaderboard(leaderboardId));
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -60,36 +55,80 @@ public class JdbcLeaderboard implements LeaderboardRepository {
         return leaderboard;
     }
 
-    private List<User> getAllPlayersFromLeaderboard(int leaderboardId) {
-        List<User> players = new ArrayList<>();
+    private List<Game> getAllGamesInLeaderboard(int leaderboardId) {
+        Game game = null;
+        List<Game> gameList = new ArrayList<>();
+        List<CivilizationStat> civilizationStatList = null;
 
-        try (Connection connection = dataSource.getConnection()){
-            try {
-                connection.setAutoCommit(false);
+        try (Connection connection = dataSource.getConnection()) {
+            String getAllGames = """
+                    SELECT * FROM game g
+                    LEFT JOIN civilization_stat cs ON g.id = cs.game_id
+                    WHERE g.leaderboard_id = ?
+                    ORDER BY cs.id ASC;
+                    """;
 
-                String getAllPlayers = """
-                        SELECT DISTINCT account_username FROM leaderboard l
-                        LEFT JOIN game_stat gs ON gs.leaderboard_id = l.id
-                        WHERE l.id = ?;
-                        """;
+            PreparedStatement preparedStatement = connection.prepareStatement(getAllGames);
+            preparedStatement.setInt(1, leaderboardId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                PreparedStatement preparedStatement = connection.prepareStatement(getAllPlayers);
-                preparedStatement.setInt(1, leaderboardId);
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                while (resultSet.next()) {
-                    User player = new User(resultSet.getString(1));
-                    players.add(player);
+            int gameId = 0;
+            while (resultSet.next()) {
+                if (gameId != resultSet.getInt(1)) {
+                    civilizationStatList = new ArrayList<>();
+                    game = new Game(
+                            resultSet.getInt(1),
+                            resultSet.getString(2),
+                            getAllPlayersFromGame(resultSet.getInt(1))
+                    );
+                    gameList.add(game);
                 }
 
-                connection.commit();
-                connection.setAutoCommit(true);
+                CivilizationStat civilizationStat = new CivilizationStat(
+                        resultSet.getInt(4),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getString(7),
+                        resultSet.getBoolean(8),
+                        resultSet.getInt(10),
+                        VictoryType.valueOf(resultSet.getString(9)),
+                        resultSet.getInt(11),
+                        resultSet.getInt(12)
+                );
 
-            }catch (SQLException sqlException) {
-                connection.rollback();
-                connection.setAutoCommit(true);
-                sqlException.printStackTrace();
+                civilizationStatList.add(civilizationStat);
+                game.setCivilizationStatList(civilizationStatList);
+
+                gameId = resultSet.getInt(1);
             }
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return gameList;
+    }
+
+    private List<User> getAllPlayersFromGame(int gameId) {
+        List<User> players = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection()) {
+            String getAllPlayers = """
+                    SELECT DISTINCT account_username
+                    FROM civilization_stat cs
+                    LEFT JOIN game g ON g.id = cs.game_id
+                    WHERE g.id = ?;
+                    """;
+
+            PreparedStatement preparedStatement = connection.prepareStatement(getAllPlayers);
+            preparedStatement.setInt(1, gameId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                User player = new User(resultSet.getString(1));
+                players.add(player);
+            }
+
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
@@ -97,53 +136,41 @@ public class JdbcLeaderboard implements LeaderboardRepository {
         return players;
     }
 
-    private List<GameStat> getGameStatListFromLeaderboard(ResultSet leaderboardsRs) {
-        List<GameStat> gameStatList = new ArrayList<>();
-        try {
-            //The courser has already been moved down the list once at the if check,
-            //therefore we will have to instance GameStat, before running the while-loop
-            GameStat gameStat = new GameStat(
-                    leaderboardsRs.getInt(5),
-                    leaderboardsRs.getString(6),
-                    leaderboardsRs.getInt(7),
-                    leaderboardsRs.getString(8),
-                    leaderboardsRs.getBoolean(9),
-                    leaderboardsRs.getInt(11),
-                    VictoryType.valueOf(leaderboardsRs.getString(10)),
-                    leaderboardsRs.getInt(12),
-                    leaderboardsRs.getInt(13)
-            );
-            gameStatList.add(gameStat);
+    private List<User> getAllPlayersInLeaderboard(int leaderboardId) {
+        List<User> playerList = new ArrayList<>();
 
-            while (leaderboardsRs.next()) {
-                gameStat = new GameStat(
-                        leaderboardsRs.getInt(5),
-                        leaderboardsRs.getString(6),
-                        leaderboardsRs.getInt(7),
-                        leaderboardsRs.getString(8),
-                        leaderboardsRs.getBoolean(9),
-                        leaderboardsRs.getInt(11),
-                        VictoryType.valueOf(leaderboardsRs.getString(10)),
-                        leaderboardsRs.getInt(12),
-                        leaderboardsRs.getInt(13)
-                );
-                gameStatList.add(gameStat);
+        try(Connection connection = dataSource.getConnection()) {
+            String getAllPlayersInLeaderboard = """
+                    SELECT DISTINCT account_username
+                    FROM leaderboard l
+                    LEFT JOIN game g ON g.leaderboard_id = l.id
+                    LEFT JOIN civilization_stat cs ON g.id = cs.game_id
+                    WHERE l.id = ?
+                    ORDER BY account_username;
+                    """;
+
+            PreparedStatement preparedStatement = connection.prepareStatement(getAllPlayersInLeaderboard);
+            preparedStatement.setInt(1, leaderboardId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                User player = new User(resultSet.getString(1));
+                playerList.add(player);
             }
-        } catch (SQLException sqlException) {
+        }catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
 
-        return gameStatList;
+        return playerList;
     }
-
     @Override
     public List<Leaderboard> getAllLeaderboards(String username) {
         return null;
     }
 
     @Override
-    public boolean createLeaderboard(Leaderboard leaderboard) {
-        boolean isCreated = false;
+    public Leaderboard createLeaderboard(Leaderboard leaderboard) {
+        Leaderboard createdLeaderboard = null;
 
         try (Connection connection = dataSource.getConnection()) {
             try {
@@ -152,10 +179,30 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                 String createLeaderboard = """
                         INSERT INTO leaderboard (name, description) VALUES(?, ?);
                         """;
-                PreparedStatement preparedStatement = connection.prepareStatement(createLeaderboard);
+                PreparedStatement preparedStatement = connection.prepareStatement(createLeaderboard, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, leaderboard.getName());
                 preparedStatement.setString(2, leaderboard.getDescription());
-                isCreated = 0 < preparedStatement.executeUpdate();
+                preparedStatement.executeUpdate();
+
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()){
+                    int leaderboardId = generatedKeys.getInt(1);
+
+                    String getCreatedLeaderboard = """
+                            SELECT * FROM leaderboard WHERE id = ?
+                            """;
+
+                    PreparedStatement ps = connection.prepareStatement(getCreatedLeaderboard);
+                    ps.setInt(1, leaderboardId);
+                    ResultSet resultSet = ps.executeQuery();
+                    resultSet.next();
+
+                    createdLeaderboard = new Leaderboard(
+                            leaderboardId,
+                            resultSet.getString(2),
+                            resultSet.getString(3)
+                    );
+                }
 
                 connection.commit();
                 connection.setAutoCommit(true);
@@ -170,7 +217,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
             sqlException.printStackTrace();
         }
 
-        return isCreated;
+        return createdLeaderboard;
     }
 
     @Override
@@ -245,7 +292,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
 
     //OTHER
     @Override
-    public boolean addGameStat(GameStat gameStat, int leaderboardId) {
+    public boolean addGameStat(CivilizationStat civilizationStat, int leaderboardId) {
         //Currently this method is redundant since the gamestat automaticly gets added to the leaderboard when its created.
         //In this version you cant have a personal log that tracks all your games.
         //For that version we would want this method.

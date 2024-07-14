@@ -1,7 +1,7 @@
 package com.example.civilizationleaderboard;
 
 import com.example.civilizationleaderboard.dto.*;
-import com.example.civilizationleaderboard.model.GameStat;
+import com.example.civilizationleaderboard.model.CivilizationStat;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import org.springframework.stereotype.Component;
 
@@ -21,12 +21,12 @@ public class DtoMapper {
                 leaderboard.getName(),
                 leaderboard.getDescription(),
                 leaderboard.getPlayers(),
-                leaderboard.getGameStatList()
+                leaderboard.getGameList()
                 );
     }
 
-    public GameStat toGameStat(CreateGameStatDto gameStat) {
-        return new GameStat(
+    public CivilizationStat toGameStat(CreateGameStatDto gameStat) {
+        return new CivilizationStat(
                 gameStat.accountUsername(),
                 gameStat.leaderboardId(),
                 gameStat.name(),
@@ -38,8 +38,8 @@ public class DtoMapper {
         );
     }
 
-    public GameStat toPrivateGameStat(CreatePrivateGameStatDto gameStat) {
-        return new GameStat(
+    public CivilizationStat toPrivateGameStat(CreatePrivateGameStatDto gameStat) {
+        return new CivilizationStat(
                 gameStat.accountUsername(),
                 gameStat.name(),
                 gameStat.haveWon(),
@@ -50,8 +50,8 @@ public class DtoMapper {
         );
     }
 
-    public GameStat toGameStat(GameStatDto gameStat) {
-        return new GameStat(
+    public CivilizationStat toGameStat(GameStatDto gameStat) {
+        return new CivilizationStat(
                 gameStat.id(),
                 gameStat.accountUsername(),
                 gameStat.leaderboardId(),
@@ -64,30 +64,30 @@ public class DtoMapper {
         );
     }
 
-    public GameStatDto toGameStatDto(GameStat gameStat) {
+    public GameStatDto toGameStatDto(CivilizationStat civilizationStat) {
         return new GameStatDto(
-                gameStat.getId(),
-                gameStat.getAccountUsername(),
-                gameStat.getLeaderboardId(),
-                gameStat.getName(),
-                gameStat.isHaveWon(),
-                gameStat.getVictoryPoints(),
-                gameStat.getVictoryType(),
-                gameStat.getScience(),
-                gameStat.getCulture()
+                civilizationStat.getId(),
+                civilizationStat.getAccountUsername(),
+                civilizationStat.getGameId(),
+                civilizationStat.getName(),
+                civilizationStat.isHaveWon(),
+                civilizationStat.getVictoryPoints(),
+                civilizationStat.getVictoryType(),
+                civilizationStat.getScience(),
+                civilizationStat.getCulture()
         );
     }
 
-    public PrivateGameStatDto toPrivateGameStatDto(GameStat gameStat) {
+    public PrivateGameStatDto toPrivateGameStatDto(CivilizationStat civilizationStat) {
         return new PrivateGameStatDto(
-                gameStat.getId(),
-                gameStat.getAccountUsername(),
-                gameStat.getName(),
-                gameStat.isHaveWon(),
-                gameStat.getVictoryPoints(),
-                gameStat.getVictoryType(),
-                gameStat.getScience(),
-                gameStat.getCulture()
+                civilizationStat.getId(),
+                civilizationStat.getAccountUsername(),
+                civilizationStat.getName(),
+                civilizationStat.isHaveWon(),
+                civilizationStat.getVictoryPoints(),
+                civilizationStat.getVictoryType(),
+                civilizationStat.getScience(),
+                civilizationStat.getCulture()
         );
     }
 }
