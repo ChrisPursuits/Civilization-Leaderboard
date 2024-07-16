@@ -2,7 +2,9 @@
 //
 //import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
 //import com.example.civilizationleaderboard.model.CivilizationStat;
+//import com.example.civilizationleaderboard.model.Leaderboard;
 //import com.example.civilizationleaderboard.model.User;
+//import com.example.civilizationleaderboard.repository.LeaderboardRepository;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
@@ -19,8 +21,16 @@
 //    @Autowired
 //    private LeaderboardService leaderboardService;
 //
+//    @Autowired
+//    LeaderboardRepository leaderboardRepository;
+//
+//
+//
+//
 //    @Test
 //    void createLeaderboard() {
+//
+//
 //    }
 //
 //    @Test
