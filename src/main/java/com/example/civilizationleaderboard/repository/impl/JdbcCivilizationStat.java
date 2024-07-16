@@ -18,31 +18,37 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
     }
 
     @Override
-    public CivilizationStat createCivStat(CivilizationStat civilizationStatToCreate) {
+    public CivilizationStat createCivStatAutoPlacement(CivilizationStat civilizationStatToCreate) {
         CivilizationStat createdCivStat = null;
 
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             try {
                 connection.setAutoCommit(false);
 
                 String createCivStat = """
-                        INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+                        INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, victory_type, victory_points, science, culture, is_other_place)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                         """;
+
+
                 PreparedStatement preparedStatement = connection.prepareStatement(createCivStat, Statement.RETURN_GENERATED_KEYS);
+
+                if (civilizationStatToCreate.getVictoryType() != VictoryType.LOSE) {
+                    preparedStatement.setBoolean(4, true);
+                    preparedStatement.setBoolean(9, false);
+                }
                 preparedStatement.setString(1, civilizationStatToCreate.getAccountUsername());
                 preparedStatement.setInt(2, civilizationStatToCreate.getGameId());
                 preparedStatement.setString(3, civilizationStatToCreate.getName());
-                preparedStatement.setBoolean(4, civilizationStatToCreate.isHaveWon());
                 preparedStatement.setString(5, civilizationStatToCreate.getVictoryType().toString());
                 preparedStatement.setInt(6, civilizationStatToCreate.getVictoryPoints());
                 preparedStatement.setInt(7, civilizationStatToCreate.getScience());
                 preparedStatement.setInt(8, civilizationStatToCreate.getCulture());
                 preparedStatement.executeUpdate();
 
-                ResultSet genereatedKeys = preparedStatement.getGeneratedKeys();
-                if (genereatedKeys.next()) {
-                    int civStatId = genereatedKeys.getInt(1);
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int civStatId = generatedKeys.getInt(1);
 
                     createdCivStat = getCivilizationStat(civStatId);
                 }
@@ -50,13 +56,65 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                 connection.commit();
                 connection.setAutoCommit(true);
 
-            }catch (SQLException sqlException) {
+            } catch (SQLException sqlException) {
                 connection.rollback();
                 connection.setAutoCommit(true);
                 sqlException.printStackTrace();
             }
 
-        }catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return createdCivStat;
+    }
+
+    @Override
+    public CivilizationStat createCivStatManuelPlacement(CivilizationStat civilizationStatToCreate) {
+        CivilizationStat createdCivStat = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+
+                String createCivStat = """
+                        INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, is_second_place, is_third_place, is_other_place, victory_type, victory_points, science, culture)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                        """;
+
+
+                PreparedStatement preparedStatement = connection.prepareStatement(createCivStat, Statement.RETURN_GENERATED_KEYS);
+
+                preparedStatement.setString(1, civilizationStatToCreate.getAccountUsername());
+                preparedStatement.setInt(2, civilizationStatToCreate.getGameId());
+                preparedStatement.setString(3, civilizationStatToCreate.getName());
+                preparedStatement.setBoolean(4, civilizationStatToCreate.isFirstPlace());
+                preparedStatement.setBoolean(5, civilizationStatToCreate.isSecondPlace());
+                preparedStatement.setBoolean(6, civilizationStatToCreate.isThirdPlace());
+                preparedStatement.setBoolean(7, civilizationStatToCreate.isOtherPlace());
+                preparedStatement.setString(8, civilizationStatToCreate.getVictoryType().toString());
+                preparedStatement.setInt(9, civilizationStatToCreate.getVictoryPoints());
+                preparedStatement.setInt(10, civilizationStatToCreate.getScience());
+                preparedStatement.setInt(11, civilizationStatToCreate.getCulture());
+                preparedStatement.executeUpdate();
+
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int civStatId = generatedKeys.getInt(1);
+
+                    createdCivStat = getCivilizationStat(civStatId);
+                }
+
+                connection.commit();
+                connection.setAutoCommit(true);
+
+            } catch (SQLException sqlException) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                sqlException.printStackTrace();
+            }
+
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
 
@@ -67,7 +125,7 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
     public CivilizationStat getCivilizationStat(int civStatId) {
         CivilizationStat civilizationStat = null;
 
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
             try {
                 connection.setAutoCommit(false);
 
@@ -83,10 +141,13 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                             resultSet.getInt(3),
                             resultSet.getString(4),
                             resultSet.getBoolean(5),
-                            resultSet.getInt(7),
-                            VictoryType.valueOf(resultSet.getString(6)),
-                            resultSet.getInt(8),
-                            resultSet.getInt(9)
+                            resultSet.getBoolean(6),
+                            resultSet.getBoolean(7),
+                            resultSet.getBoolean(8),
+                            resultSet.getInt(10),
+                            VictoryType.valueOf(resultSet.getString(9)),
+                            resultSet.getInt(11),
+                            resultSet.getInt(12)
                     );
                 }
 
@@ -97,7 +158,7 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                 connection.rollback();
                 connection.setAutoCommit(true);
             }
-        }catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
 
@@ -107,24 +168,27 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
     @Override
     public CivilizationStat editCivStat(CivilizationStat civilizationStat) {
 
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             try {
                 connection.setAutoCommit(false);
 
                 String editGameStats = """
                         UPDATE civilization_stat
-                        SET name = ?, haveWon = ?, victory_type = ?, victory_points = ?, science = ?, culture = ?
+                        SET name = ?, is_first_place = ?, is_second_place = ?, is_third_place = ?, is_other_place = ?, victory_type = ?, victory_points = ?, science = ?, culture = ?
                         WHERE id = ?;
                         """;
 
                 PreparedStatement preparedStatement = connection.prepareStatement(editGameStats);
                 preparedStatement.setString(1, civilizationStat.getName());
-                preparedStatement.setBoolean(2, civilizationStat.isHaveWon());
-                preparedStatement.setString(3, civilizationStat.getVictoryType().toString());
-                preparedStatement.setInt(4, civilizationStat.getVictoryPoints());
-                preparedStatement.setInt(5, civilizationStat.getScience());
-                preparedStatement.setInt(6, civilizationStat.getCulture());
-                preparedStatement.setInt(7, civilizationStat.getId());
+                preparedStatement.setBoolean(2, civilizationStat.isFirstPlace());
+                preparedStatement.setBoolean(3, civilizationStat.isSecondPlace());
+                preparedStatement.setBoolean(4, civilizationStat.isThirdPlace());
+                preparedStatement.setBoolean(5, civilizationStat.isOtherPlace());
+                preparedStatement.setString(6, civilizationStat.getVictoryType().toString());
+                preparedStatement.setInt(7, civilizationStat.getVictoryPoints());
+                preparedStatement.setInt(8, civilizationStat.getScience());
+                preparedStatement.setInt(9, civilizationStat.getCulture());
+                preparedStatement.setInt(10, civilizationStat.getId());
                 int affectedRows = preparedStatement.executeUpdate();
 
                 if (affectedRows > 0) {
@@ -136,12 +200,12 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                 connection.rollback();
                 connection.setAutoCommit(true);
 
-            }catch (SQLException sqlException) {
+            } catch (SQLException sqlException) {
                 connection.rollback();
                 connection.setAutoCommit(true);
                 sqlException.printStackTrace();
             }
-        }catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
 
@@ -152,7 +216,7 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
     public boolean deleteCivStat(int gameStatId) {
         boolean isDeleted = false;
 
-        try(Connection connection = dataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             try {
                 connection.setAutoCommit(false);
 
@@ -169,12 +233,12 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                 connection.commit();
                 connection.setAutoCommit(true);
 
-            }catch (SQLException sqlException) {
+            } catch (SQLException sqlException) {
                 connection.rollback();
                 connection.setAutoCommit(true);
                 sqlException.printStackTrace();
             }
-        }catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
 

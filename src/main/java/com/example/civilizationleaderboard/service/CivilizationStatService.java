@@ -18,9 +18,14 @@ public class CivilizationStatService {
         this.dtoMapper = dtoMapper;
     }
 
-    public void createGameStat(CreateCivStatDto gameStat) {
+    public void createGameStatAutoPlacement(CreateCivStatDto gameStat) {
         CivilizationStat civilizationStatToCreate = dtoMapper.toCivStat(gameStat);
-        civilizationStatRepository.createCivStat(civilizationStatToCreate);
+        civilizationStatRepository.createCivStatAutoPlacement(civilizationStatToCreate);
+    }
+
+    public void createGameStatManuelPlacement(CreateCivStatDto gameStat) {
+        CivilizationStat civilizationStatToCreate = dtoMapper.toCivStat(gameStat);
+        civilizationStatRepository.createCivStatManuelPlacement(civilizationStatToCreate);
     }
 
     public CivStatDto getGameStat(int gameStatId) {

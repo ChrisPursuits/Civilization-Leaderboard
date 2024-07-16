@@ -90,10 +90,13 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                         resultSet.getInt(6),
                         resultSet.getString(7),
                         resultSet.getBoolean(8),
-                        resultSet.getInt(10),
-                        VictoryType.valueOf(resultSet.getString(9)),
-                        resultSet.getInt(11),
-                        resultSet.getInt(12)
+                        resultSet.getBoolean(9),
+                        resultSet.getBoolean(10),
+                        resultSet.getBoolean(11),
+                        resultSet.getInt(13),
+                        VictoryType.valueOf(resultSet.getString(12)),
+                        resultSet.getInt(14),
+                        resultSet.getInt(15)
                 );
 
                 civilizationStatList.add(civilizationStat);

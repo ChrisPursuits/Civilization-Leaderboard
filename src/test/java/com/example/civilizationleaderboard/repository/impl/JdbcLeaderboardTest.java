@@ -35,10 +35,10 @@ class JdbcLeaderboardTest {
                 new User("Mikkel"))
         );
         List<CivilizationStat> civilizationStatsList = new ArrayList<>(List.of(
-                new CivilizationStat(1, "Engjëll", 1, "Portugal", false, 521, VictoryType.LOSE, 111, 121),
-                new CivilizationStat(2, "Chris", 1, "China", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
-                new CivilizationStat(3, "Mikkel", 1, "Japan", true, 777, VictoryType.CULTURAL, 231, 321),
-                new CivilizationStat(4, "Markus", 1, "Spain", true, 417, VictoryType.DOMINATION, 425, 412))
+                new CivilizationStat(1, "Engjëll", 1, "Portugal", false, false, false, true, 521, VictoryType.LOSE, 111, 121),
+                new CivilizationStat(2, "Chris", 1, "China", true, false, false, false, 777, VictoryType.SCIENTIFIC, 1811, 21),
+                new CivilizationStat(3, "Mikkel", 1, "Japan", false, true, false, false, 777, VictoryType.CULTURAL, 231, 321),
+                new CivilizationStat(4, "Markus", 1, "Spain",  false, false,true, false, 417, VictoryType.DOMINATION, 425, 412))
         );
         Game game = new Game(1, 1, "Game: 1", civilizationStatsList);
 
@@ -74,10 +74,10 @@ class JdbcLeaderboardTest {
                 new User("Mikkel"))
         );
         List<CivilizationStat> civilizationStatsList = new ArrayList<>(List.of(
-                new CivilizationStat(1, "Engjëll", 1, "Portugal", false, 521, VictoryType.LOSE, 111, 121),
-                new CivilizationStat(2, "Chris", 1, "China", true, 777, VictoryType.SCIENTIFIC, 1811, 21),
-                new CivilizationStat(3, "Mikkel", 1, "Japan", true, 777, VictoryType.CULTURAL, 231, 321),
-                new CivilizationStat(4, "Markus", 1, "Spain", true, 417, VictoryType.DOMINATION, 425, 412))
+                new CivilizationStat(1, "Engjëll", 1, "Portugal", false, false, false, true, 521, VictoryType.LOSE, 111, 121),
+                new CivilizationStat(2, "Chris", 1, "China", true, false, false, false, 777, VictoryType.SCIENTIFIC, 1811, 21),
+                new CivilizationStat(3, "Mikkel", 1, "Japan", false, true, false, false, 777, VictoryType.CULTURAL, 231, 321),
+                new CivilizationStat(4, "Markus", 1, "Spain",  false, false,true, false, 417, VictoryType.DOMINATION, 425, 412))
         );
         Game game = new Game(1, 1, "Game: 1", civilizationStatsList);
 

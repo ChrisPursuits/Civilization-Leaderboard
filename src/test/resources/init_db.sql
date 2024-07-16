@@ -43,7 +43,10 @@ CREATE TABLE IF NOT EXISTS civilization_stat
     account_username VARCHAR(50) NOT NULL,
     game_id          INT,
     name             VARCHAR(50) NOT NULL,
-    haveWon          boolean              DEFAULT FALSE,
+    is_first_place   boolean              DEFAULT FALSE,
+    is_second_place  boolean              DEFAULT FALSE,
+    is_third_place   boolean              DEFAULT FALSE,
+    is_other_place   boolean              DEFAULT FALSE,
     victory_type     VARCHAR(20) NOT NULL DEFAULT 'LOSE',
     victory_points   LONG        NOT NULL,
     science          LONG        NOT NULL,
@@ -80,11 +83,14 @@ VALUES ('leaderboardOne', 'descriptionOne');
 INSERT INTO game (name, leaderboard_id)
     VALUE ('Game: 1', 1);
 
-INSERT INTO civilization_stat (account_username, game_id, name, victory_points, science, culture)
-VALUES ('Engjëll', 1, 'Portugal', 521, 111, 121);
-INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
+INSERT INTO civilization_stat (account_username, game_id, name, is_other_place, victory_points, science, culture)
+VALUES ('Engjëll', 1, 'Portugal', true, 521, 111, 121);
+INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, victory_type, victory_points, science,
+                               culture)
 VALUES ('Chris', 1, 'China', true, 'SCIENTIFIC', 777, 1811, 21);
-INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
+INSERT INTO civilization_stat (account_username, game_id, name, is_second_place, victory_type, victory_points, science,
+                               culture)
 VALUES ('Mikkel', 1, 'Japan', true, 'CULTURAL', 777, 231, 321);
-INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
+INSERT INTO civilization_stat (account_username, game_id, name, is_third_place, victory_type, victory_points, science,
+                               culture)
 VALUES ('Markus', 1, 'Spain', true, 'DOMINATION', 417, 425, 412);
