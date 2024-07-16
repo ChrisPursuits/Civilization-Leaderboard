@@ -18,7 +18,7 @@ class JdbcCivilizationStatTest {
 
     @Test
     void getCivilizationStatsOnId() {
-        CivilizationStat expectedCivilizationStat = new CivilizationStat(2, "john doe", 1, "China", true, 777, VictoryType.SCIENTIFIC, 1811, 21);
+        CivilizationStat expectedCivilizationStat = new CivilizationStat(2, "Chris", 1, "China", true, 777, VictoryType.SCIENTIFIC, 1811, 21);
         CivilizationStat actualCivilizationStat = jdbcCivilizationStat.getCivilizationStat(2);
 
         assertEquals(expectedCivilizationStat, actualCivilizationStat);
