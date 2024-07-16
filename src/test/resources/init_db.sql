@@ -69,9 +69,10 @@ CREATE TABLE IF NOT EXISTS invitations
 
 -- DATA INSERTION
 
-INSERT INTO users (username, password) value ('john doe', 123);
+INSERT INTO users (username, password) value ('Engjëll', 123);
 INSERT INTO users (username, password) value ('Chris', 123);
 INSERT INTO users (username, password) value ('Mikkel', 123);
+INSERT INTO users (username, password) value ('Markus', 123);
 
 INSERT INTO leaderboard (name, description)
 VALUES ('leaderboardOne', 'descriptionOne');
@@ -80,10 +81,10 @@ INSERT INTO game (name, leaderboard_id)
     VALUE ('Game: 1', 1);
 
 INSERT INTO civilization_stat (account_username, game_id, name, victory_points, science, culture)
-VALUES ('john doe', 1, 'Portugal', 521, 111, 121);
+VALUES ('Engjëll', 1, 'Portugal', 521, 111, 121);
 INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
-VALUES ('john doe', 1, 'China', true, 'SCIENTIFIC', 777, 1811, 21);
+VALUES ('Chris', 1, 'China', true, 'SCIENTIFIC', 777, 1811, 21);
 INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
 VALUES ('Mikkel', 1, 'Japan', true, 'CULTURAL', 777, 231, 321);
 INSERT INTO civilization_stat (account_username, game_id, name, haveWon, victory_type, victory_points, science, culture)
-VALUES ('Mikkel', 1, 'Spain', true, 'DOMINATION', 417, 425, 412);
+VALUES ('Markus', 1, 'Spain', true, 'DOMINATION', 417, 425, 412);
