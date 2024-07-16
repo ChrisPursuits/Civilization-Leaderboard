@@ -6,24 +6,22 @@ public class User {
 
     private String username;
     private String password;
-    private int totalWins;
-    private int totalVictoryPoints;
-    private int totalScience;
-    private int totalCulture;
+    private int gamesPlayed;
     private int firstPlaceCount;
     private int secondPlaceCount;
     private int thirdPlaceCount;
-
-    public User(String username, int totalWins, int totalVictoryPoints, int totalScience, int totalCulture) {
-        this.username = username;
-        this.totalWins = totalWins;
-        this.totalVictoryPoints = totalVictoryPoints;
-        this.totalScience = totalScience;
-        this.totalCulture = totalCulture;
-    }
+    private int otherPlacementCount;
 
     public User(String username) {
         this.username = username;
+    }
+
+    public User(int gamesPlayed, int firstPlaceCount, int secondPlaceCount, int thirdPlaceCount, int otherPlacementCount) {
+        this.gamesPlayed = gamesPlayed;
+        this.firstPlaceCount = firstPlaceCount;
+        this.secondPlaceCount = secondPlaceCount;
+        this.thirdPlaceCount = thirdPlaceCount;
+        this.otherPlacementCount = otherPlacementCount;
     }
 
     public String getUsername() {
@@ -42,36 +40,12 @@ public class User {
         this.password = password;
     }
 
-    public int getTotalWins() {
-        return totalWins;
+    public int getGamesPlayed() {
+        return gamesPlayed;
     }
 
-    public void setTotalWins(int totalWins) {
-        this.totalWins = totalWins;
-    }
-
-    public int getTotalVictoryPoints() {
-        return totalVictoryPoints;
-    }
-
-    public void setTotalVictoryPoints(int totalVictoryPoints) {
-        this.totalVictoryPoints = totalVictoryPoints;
-    }
-
-    public int getTotalScience() {
-        return totalScience;
-    }
-
-    public void setTotalScience(int totalScience) {
-        this.totalScience = totalScience;
-    }
-
-    public int getTotalCulture() {
-        return totalCulture;
-    }
-
-    public void setTotalCulture(int totalCulture) {
-        this.totalCulture = totalCulture;
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
     }
 
     public int getFirstPlaceCount() {
@@ -98,16 +72,24 @@ public class User {
         this.thirdPlaceCount = thirdPlaceCount;
     }
 
+    public int getOtherPlacementCount() {
+        return otherPlacementCount;
+    }
+
+    public void setOtherPlacementCount(int otherPlacementCount) {
+        this.otherPlacementCount = otherPlacementCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return totalWins == user.totalWins && totalVictoryPoints == user.totalVictoryPoints && totalScience == user.totalScience && totalCulture == user.totalCulture && firstPlaceCount == user.firstPlaceCount && secondPlaceCount == user.secondPlaceCount && thirdPlaceCount == user.thirdPlaceCount && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return gamesPlayed == user.gamesPlayed && firstPlaceCount == user.firstPlaceCount && secondPlaceCount == user.secondPlaceCount && thirdPlaceCount == user.thirdPlaceCount && otherPlacementCount == user.otherPlacementCount && Objects.equals(username, user.username) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, totalWins, totalVictoryPoints, totalScience, totalCulture, firstPlaceCount, secondPlaceCount, thirdPlaceCount);
+        return Objects.hash(username, password, gamesPlayed, firstPlaceCount, secondPlaceCount, thirdPlaceCount, otherPlacementCount);
     }
 
     @Override
@@ -115,13 +97,11 @@ public class User {
         return "User{" +
                "username='" + username + '\'' +
                ", password='" + password + '\'' +
-               ", totalWins=" + totalWins +
-               ", totalVictoryPoints=" + totalVictoryPoints +
-               ", totalScience=" + totalScience +
-               ", totalCulture=" + totalCulture +
+               ", gamesPlayed=" + gamesPlayed +
                ", firstPlaceCount=" + firstPlaceCount +
                ", secondPlaceCount=" + secondPlaceCount +
                ", thirdPlaceCount=" + thirdPlaceCount +
+               ", otherPlacementCount=" + otherPlacementCount +
                '}';
     }
 }
