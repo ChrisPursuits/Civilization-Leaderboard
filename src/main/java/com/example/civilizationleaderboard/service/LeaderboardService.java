@@ -6,9 +6,18 @@ import com.example.civilizationleaderboard.dto.EditLeaderboardDto;
 import com.example.civilizationleaderboard.dto.CivStatDto;
 import com.example.civilizationleaderboard.dto.ViewLeaderboardDto;
 import com.example.civilizationleaderboard.model.CivilizationStat;
+import com.example.civilizationleaderboard.model.Game;
 import com.example.civilizationleaderboard.model.Leaderboard;
+import com.example.civilizationleaderboard.model.User;
 import com.example.civilizationleaderboard.repository.LeaderboardRepository;
+import comparator.FirstPlaceCounterComparator;
+import comparator.SecondPlaceCounterComparator;
+import comparator.ThirdPlaceCounterComparator;
+import comparator.VictoryPointsComparator;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class LeaderboardService {
@@ -26,52 +35,70 @@ public class LeaderboardService {
         leaderboardRepository.createLeaderboard(leaderboard);
     }
 
-//    public ViewLeaderboardDto getLeaderboard(int gameId) {
-//        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(gameId);
-//        Leaderboard sortedLeaderboard = sortLeaderboard(leaderboard);
-//
-//        return dtoMapper.toViewLeaderboardDto(sortedLeaderboard);
-//    }
+    public ViewLeaderboardDto getLeaderboardSortedByVictoryPoints(int leaderboardId) {
+        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(leaderboardId);
+        Leaderboard sortedLeaderboard = sortLeaderboardByVictoryPoints(leaderboard);
 
-//    private Leaderboard sortLeaderboard(Leaderboard leaderboard) {
-//        List<User> players = summarizePlayerStats(leaderboard);
-//
-//        Collections.sort(players, new TotalWinsComparator().thenComparing(new TotalVictoryPointsComparator()).reversed()); //reversed makes it sort in descending order. Without it, it would be accenting order
-//        leaderboard.setPlayers(players);
-//
-//        return leaderboard;
-//    }
+        return dtoMapper.toViewLeaderboardDto(sortedLeaderboard);
+    }
 
-//    private List<User> summarizePlayerStats(Leaderboard leaderboard) {
-//        List<User> players = new ArrayList<>();
+    private Leaderboard sortLeaderboardByVictoryPoints(Leaderboard leaderboard) {
+
+        //Loop through list of players in leaderboard
+        List<User> playerList = leaderboard.getPlayers();
+        for (User player : playerList) {
+            String playerName = player.getUsername();
+
+            int gamesPlayed = 0;
+            int firstPlaceCount = 0;
+            int secondPlaceCount = 0;
+            int thirdPlaceCount = 0;
+            int otherPlacementCount = 0;
+
+            //Loop through all the games in the leaderboard.
+            List<Game> gameList = leaderboard.getGameList();
+            for (Game game : gameList) {
+
+                //sort every civStats in every game by victory points.
+                List<CivilizationStat> civStatList = game.getCivilizationStatList();
+                Collections.sort(civStatList, new VictoryPointsComparator().reversed());
+
+                //track player/leaderboard stats.
+                ++gamesPlayed;
+
+                for (int i = 0; i < civStatList.size(); i++) {
+                    String accountUsername = civStatList.get(i).getAccountUsername();
+                    
+                    if (playerName.equalsIgnoreCase(accountUsername)) {
+                        int placementCounter = switch (i) {
+                            case 0 -> ++firstPlaceCount;
+                            case 1 -> ++secondPlaceCount;
+                            case 2 -> ++thirdPlaceCount;
+                            default -> ++otherPlacementCount;
+                        };
+                    }
+                    
+                }
+            }
+
+            player.setGamesPlayed(gamesPlayed);
+            player.setFirstPlaceCount(firstPlaceCount);
+            player.setSecondPlaceCount(secondPlaceCount);
+            player.setThirdPlaceCount(thirdPlaceCount);
+            player.setOtherPlacementCount(otherPlacementCount);
+
+            //Sort the player list.
+            Collections.sort(playerList,
+                    new FirstPlaceCounterComparator()
+                            .thenComparing(new SecondPlaceCounterComparator()
+                                    .thenComparing(new ThirdPlaceCounterComparator())).reversed());
+        }
+
+        return leaderboard;
+    }
+
+//    private Leaderboard sortLeaderboardByPlacements(Leaderboard leaderboard) {
 //
-//        for (User player : leaderboard.getPlayers()) {
-//            String playerUsername = player.getUsername();
-//            int totalWins = 0;
-//            int totalVictoryPoints = 0;
-//            int totalScience = 0;
-//            int totalCulture = 0;
-//
-//            for (CivilizationStat game : leaderboard.getGameStatList()) {
-//                if (playerUsername.equalsIgnoreCase(game.getAccountUsername()) && game.isHaveWon()) {
-//                    ++totalWins;
-//                }
-//
-//                if (playerUsername.equalsIgnoreCase(game.getAccountUsername())) {
-//                    totalVictoryPoints += game.getVictoryPoints();
-//                    totalScience += game.getScience();
-//                    totalCulture += game.getCulture();
-//                }
-//            }
-//
-//            player.setTotalWins(totalWins);
-//            player.setTotalVictoryPoints(totalVictoryPoints);
-//            player.setTotalScience(totalScience);
-//            player.setTotalCulture(totalCulture);
-//            players.add(player);
-//        }
-//
-//        return players;
 //    }
 
     public ViewLeaderboardDto editLeaderboard(EditLeaderboardDto editLeaderboardDto) {
