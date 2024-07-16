@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CivilizationStatService {
 
-    private CivilizationStatRepository civilizationStatRepository;
-    private DtoMapper dtoMapper;
+    private final CivilizationStatRepository civilizationStatRepository;
+    private final DtoMapper dtoMapper;
 
     public CivilizationStatService(CivilizationStatRepository civilizationStatRepository, DtoMapper dtoMapper) {
         this.civilizationStatRepository = civilizationStatRepository;

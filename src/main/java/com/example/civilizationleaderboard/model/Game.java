@@ -7,22 +7,27 @@ import java.util.Objects;
 public class Game {
 
     private int id;
+    private int leaderboardId;
     private String name;
-    private List<User> players;
     private List<CivilizationStat> civilizationStatList;
 
-    public Game(int id, String name, List<User> players, List<CivilizationStat> civilizationStatList) {
+    public Game(int id, int leaderboardId, String name, List<CivilizationStat> civilizationStatList) {
         this.id = id;
+        this.leaderboardId = leaderboardId;
         this.name = name;
-        this.players = players;
         this.civilizationStatList = civilizationStatList;
     }
 
-    public Game(int id, String name, List<User> players) {
+    public Game(int id, int leaderboardId, String name) {
         this.id = id;
+        this.leaderboardId = leaderboardId;
         this.name = name;
-        this.players = players;
         this.civilizationStatList = new ArrayList<>(0);
+    }
+
+    public Game(String name, int leaderboardId) {
+        this.name = name;
+        this.leaderboardId = leaderboardId;
     }
 
     public int getId() {
@@ -33,20 +38,20 @@ public class Game {
         this.id = id;
     }
 
+    public int getLeaderboardId() {
+        return leaderboardId;
+    }
+
+    public void setLeaderboardId(int leaderboardId) {
+        this.leaderboardId = leaderboardId;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<User> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<User> players) {
-        this.players = players;
     }
 
     public List<CivilizationStat> getCivilizationStatList() {
@@ -61,20 +66,20 @@ public class Game {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Game game)) return false;
-        return id == game.id && Objects.equals(name, game.name) && Objects.equals(players, game.players) && Objects.equals(civilizationStatList, game.civilizationStatList);
+        return id == game.id && leaderboardId == game.leaderboardId && Objects.equals(name, game.name) && Objects.equals(civilizationStatList, game.civilizationStatList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, players, civilizationStatList);
+        return Objects.hash(id, leaderboardId, name, civilizationStatList);
     }
 
     @Override
     public String toString() {
         return "Game{" +
                "id=" + id +
+               ", leaderboardId=" + leaderboardId +
                ", name='" + name + '\'' +
-               ", players=" + players +
                ", civilizationStatList=" + civilizationStatList +
                '}';
     }

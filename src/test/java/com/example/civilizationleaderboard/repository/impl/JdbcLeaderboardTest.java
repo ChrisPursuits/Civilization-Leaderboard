@@ -38,7 +38,7 @@ class JdbcLeaderboardTest {
                 new CivilizationStat(3, "Mikkel", 1, "Japan", true, 777, VictoryType.CULTURAL, 231, 321),
                 new CivilizationStat(4, "Mikkel", 1, "Spain", true, 417, VictoryType.DOMINATION, 425, 412))
         );
-        Game game = new Game(1, "Game: 1", players, civilizationStatsList);
+        Game game = new Game(1, 1,"Game: 1", civilizationStatsList);
 
         List<Game> gameList = new ArrayList<>();
         gameList.add(game);
@@ -75,7 +75,7 @@ class JdbcLeaderboardTest {
                 new CivilizationStat(3, "Mikkel", 1, "Japan", true, 777, VictoryType.CULTURAL, 231, 321),
                 new CivilizationStat(4, "Mikkel", 1, "Spain", true, 417, VictoryType.DOMINATION, 425, 412))
         );
-        Game game = new Game(1, "Game: 1", players, civilizationStatsList);
+        Game game = new Game(1, 1,"Game: 1", civilizationStatsList);
 
         List<Game> gameList = new ArrayList<>();
         gameList.add(game);

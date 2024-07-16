@@ -2,6 +2,7 @@ package com.example.civilizationleaderboard;
 
 import com.example.civilizationleaderboard.dto.*;
 import com.example.civilizationleaderboard.model.CivilizationStat;
+import com.example.civilizationleaderboard.model.Game;
 import com.example.civilizationleaderboard.model.Leaderboard;
 import org.springframework.stereotype.Component;
 
@@ -88,6 +89,13 @@ public class DtoMapper {
                 civilizationStat.getVictoryType(),
                 civilizationStat.getScience(),
                 civilizationStat.getCulture()
+        );
+    }
+
+    public Game toGame(CreateGameDto gameDto) {
+        return new Game(
+                gameDto.name(),
+                gameDto.leaderboardId()
         );
     }
 }

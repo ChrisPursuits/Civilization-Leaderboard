@@ -78,8 +78,8 @@ public class JdbcLeaderboard implements LeaderboardRepository {
                     civilizationStatList = new ArrayList<>();
                     game = new Game(
                             resultSet.getInt(1),
-                            resultSet.getString(2),
-                            getAllPlayersFromGame(resultSet.getInt(1))
+                            leaderboardId,
+                            resultSet.getString(2)
                     );
                     gameList.add(game);
                 }
@@ -109,7 +109,7 @@ public class JdbcLeaderboard implements LeaderboardRepository {
         return gameList;
     }
 
-    private List<User> getAllPlayersFromGame(int gameId) {
+    public List<User> getAllPlayersFromGame(int gameId) {
         List<User> players = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection()) {
