@@ -39,18 +39,23 @@ CREATE TABLE IF NOT EXISTS game
 
 CREATE TABLE IF NOT EXISTS civilization_stat
 (
-    id               INT AUTO_INCREMENT PRIMARY KEY,
-    account_username VARCHAR(50) NOT NULL,
-    game_id          INT,
-    name             VARCHAR(50) NOT NULL,
-    is_first_place   boolean              DEFAULT FALSE,
-    is_second_place  boolean              DEFAULT FALSE,
-    is_third_place   boolean              DEFAULT FALSE,
-    is_other_place   boolean              DEFAULT FALSE,
-    victory_type     VARCHAR(20) NOT NULL DEFAULT 'LOSE',
-    victory_points   LONG        NOT NULL,
-    science          LONG        NOT NULL,
-    culture          LONG        NOT NULL,
+    id                INT AUTO_INCREMENT PRIMARY KEY,
+    account_username  VARCHAR(50) NOT NULL,
+    game_id           INT,
+    name              VARCHAR(50) NOT NULL,
+    is_first_place    boolean              DEFAULT FALSE,
+    is_second_place   boolean              DEFAULT FALSE,
+    is_third_place    boolean              DEFAULT FALSE,
+    is_other_place    boolean              DEFAULT FALSE,
+    victory_type      VARCHAR(20) NOT NULL DEFAULT 'LOSE',
+    victory_points    LONG        NOT NULL,
+    military_strength LONG        NOT NULL,
+    science           LONG        NOT NULL,
+    culture           LONG        NOT NULL,
+    gold              LONG        NOT NULL,
+    religious_points  LONG        NOT NULL,
+    diplomatic_favors LONG        NOT NULL,
+
 
     FOREIGN KEY (account_username) REFERENCES users (username) ON DELETE CASCADE,
     FOREIGN KEY (game_id) REFERENCES game (id) ON DELETE CASCADE
