@@ -5,5 +5,7 @@ public enum VictoryType {
     CULTURAL,
     DOMINATION,
     RELIGIOUS,
+    SECOND,
+    THIRD,
     LOSE
 }
