@@ -16,7 +16,9 @@ public class User {
         this.username = username;
     }
 
-    public User(int gamesPlayed, int firstPlaceCount, int secondPlaceCount, int thirdPlaceCount, int otherPlacementCount) {
+    //USED IN LeaderboardServiceTest
+    public User(String username, int gamesPlayed, int firstPlaceCount, int secondPlaceCount, int thirdPlaceCount, int otherPlacementCount) {
+        this.username = username;
         this.gamesPlayed = gamesPlayed;
         this.firstPlaceCount = firstPlaceCount;
         this.secondPlaceCount = secondPlaceCount;
