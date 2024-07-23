@@ -42,6 +42,13 @@ public class LeaderboardService {
         return dtoMapper.toViewLeaderboardDto(sortedLeaderboard);
     }
 
+    public ViewLeaderboardDto getLeaderboardSortedByPlacements(int leaderboardId) {
+        Leaderboard leaderboard = leaderboardRepository.getLeaderboard(leaderboardId);
+        Leaderboard sortedLeaderboard = sortLeaderboardByPlacements(leaderboard);
+
+        return dtoMapper.toViewLeaderboardDto(sortedLeaderboard);
+    }
+
     private Leaderboard sortLeaderboardByVictoryPoints(Leaderboard leaderboard) {
 
         //Loop through list of players in leaderboard
@@ -86,13 +93,13 @@ public class LeaderboardService {
             player.setSecondPlaceCount(secondPlaceCount);
             player.setThirdPlaceCount(thirdPlaceCount);
             player.setOtherPlacementCount(otherPlacementCount);
-
-            //Sort the player list.
-            Collections.sort(playerList,
-                    new FirstPlaceCounterComparator()
-                            .thenComparing(new SecondPlaceCounterComparator()
-                                    .thenComparing(new ThirdPlaceCounterComparator())).reversed());
         }
+
+        //Sort the player list.
+        Collections.sort(playerList,
+                new FirstPlaceCounterComparator()
+                        .thenComparing(new SecondPlaceCounterComparator()
+                                .thenComparing(new ThirdPlaceCounterComparator())).reversed());
 
         return leaderboard;
     }
@@ -145,13 +152,13 @@ public class LeaderboardService {
             player.setThirdPlaceCount(thirdPlaceCount);
             player.setOtherPlacementCount(otherPlacementCount);
             player.setGamesPlayed(gamesPlayed);
-
-            //Sort the player list.
-            Collections.sort(players,
-                    new FirstPlaceCounterComparator()
-                            .thenComparing(new SecondPlaceCounterComparator()
-                                    .thenComparing(new ThirdPlaceCounterComparator())).reversed());
         }
+
+        //Sort the player list.
+        Collections.sort(players,
+                new FirstPlaceCounterComparator()
+                        .thenComparing(new SecondPlaceCounterComparator()
+                                .thenComparing(new ThirdPlaceCounterComparator())).reversed());
 
         return leaderboard;
     }
