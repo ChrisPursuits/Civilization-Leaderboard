@@ -97,9 +97,64 @@ public class LeaderboardService {
         return leaderboard;
     }
 
-//    private Leaderboard sortLeaderboardByPlacements(Leaderboard leaderboard) {
-//
-//    }
+    private Leaderboard sortLeaderboardByPlacements(Leaderboard leaderboard) {
+
+        List<User> players = leaderboard.getPlayers();
+        List<Game> games = leaderboard.getGameList();
+
+        for (User player:players) {
+        String playerName = player.getUsername();
+
+            int gamesPlayed = 0;
+            int firstPlaceCount = 0;
+            int secondPlaceCount = 0;
+            int thirdPlaceCount = 0;
+            int otherPlacementCount = 0;
+
+            for (Game game:games) {
+                List<CivilizationStat> civilizationStats = game.getCivilizationStatList();
+
+                ++gamesPlayed;
+
+                for (CivilizationStat civStat:civilizationStats) {
+                    String civStatName = civStat.getAccountUsername();
+
+                    if (civStatName.equalsIgnoreCase(playerName)) {
+                        if (civStat.isFirstPlace()) {
+                            ++firstPlaceCount;
+                            break;
+                        }
+                        if (civStat.isSecondPlace()) {
+                            ++secondPlaceCount;
+                            break;
+                        }
+                        if (civStat.isThirdPlace()) {
+                            ++thirdPlaceCount;
+                            break;
+                        }
+                        if (civStat.isOtherPlace()) {
+                            ++otherPlacementCount;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            player.setFirstPlaceCount(firstPlaceCount);
+            player.setSecondPlaceCount(secondPlaceCount);
+            player.setThirdPlaceCount(thirdPlaceCount);
+            player.setOtherPlacementCount(otherPlacementCount);
+            player.setGamesPlayed(gamesPlayed);
+
+            //Sort the player list.
+            Collections.sort(players,
+                    new FirstPlaceCounterComparator()
+                            .thenComparing(new SecondPlaceCounterComparator()
+                                    .thenComparing(new ThirdPlaceCounterComparator())).reversed());
+        }
+
+        return leaderboard;
+    }
 
     public ViewLeaderboardDto editLeaderboard(EditLeaderboardDto editLeaderboardDto) {
         Leaderboard leaderboardToEdit = dtoMapper.toLeaderboard(editLeaderboardDto);
