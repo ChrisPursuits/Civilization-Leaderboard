@@ -67,6 +67,8 @@ public class LeaderboardService {
             for (Game game : gameList) {
 
                 //sort every civStats in every game by victory points.
+                //if 2 players have the same amount of victory points, the first player, will receive 1 placement higher than the player after.
+                //it simply gets decided by alphabetic order, when the list a players gets queried in LeaderboardRepository
                 List<CivilizationStat> civStatList = game.getCivilizationStatList();
                 Collections.sort(civStatList, new VictoryPointsComparator().reversed());
 
@@ -75,7 +77,7 @@ public class LeaderboardService {
 
                 for (int i = 0; i < civStatList.size(); i++) {
                     String accountUsername = civStatList.get(i).getAccountUsername();
-                    
+
                     if (playerName.equalsIgnoreCase(accountUsername)) {
                         int placementCounter = switch (i) {
                             case 0 -> ++firstPlaceCount;

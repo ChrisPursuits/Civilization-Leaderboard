@@ -25,6 +25,16 @@ class LeaderboardServiceTest {
 
     @Test
     void getLeaderboardSortedByVictoryPoints() {
+        List<User> expectedPlayerList = new ArrayList<>(List.of(
+                new User("Chris", 1, 1, 0, 0, 0),
+                new User("Mikkel", 1, 0, 1, 0, 0),
+                new User("Engjëll", 1, 0, 0, 1, 0),
+                new User("Markus", 1, 0, 0, 0, 1))
+        );
+
+        List<User> actualPlayerList = leaderboardService.getLeaderboardSortedByVictoryPoints(1).players();
+
+        assertEquals(expectedPlayerList, actualPlayerList);
     }
 
     @Test
@@ -32,7 +42,7 @@ class LeaderboardServiceTest {
         List<User> expectedPlayerList = new ArrayList<>(List.of(
                 new User("Chris", 1, 1, 0, 0, 0),
                 new User("Mikkel", 1, 0, 1, 0, 0),
-                new User("Markus", 1, 0, 0,1,0),
+                new User("Markus", 1, 0, 0, 1, 0),
                 new User("Engjëll", 1, 0, 0, 0, 1))
         );
 
