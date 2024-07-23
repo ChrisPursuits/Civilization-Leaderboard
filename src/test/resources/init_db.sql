@@ -48,13 +48,13 @@ CREATE TABLE IF NOT EXISTS civilization_stat
     is_third_place    boolean              DEFAULT FALSE,
     is_other_place    boolean              DEFAULT FALSE,
     victory_type      VARCHAR(20) NOT NULL DEFAULT 'LOSE',
-    victory_points    LONG        NOT NULL DEFAULT 0,
-    military_strength LONG        NOT NULL DEFAULT 0,
-    science           LONG        NOT NULL DEFAULT 0,
-    culture           LONG        NOT NULL DEFAULT 0,
-    gold              LONG        NOT NULL DEFAULT 0,
-    religious_points  LONG        NOT NULL DEFAULT 0,
-    diplomatic_favors LONG        NOT NULL DEFAULT 0,
+    victory_points    INT        NOT NULL DEFAULT 0,
+    military_strength INT        NOT NULL DEFAULT 0,
+    science           INT        NOT NULL DEFAULT 0,
+    culture           INT        NOT NULL DEFAULT 0,
+    gold              INT        NOT NULL DEFAULT 0,
+    religious_points  INT        NOT NULL DEFAULT 0,
+    diplomatic_favors INT        NOT NULL DEFAULT 0,
 
 
     FOREIGN KEY (account_username) REFERENCES users (username) ON DELETE CASCADE,
@@ -88,14 +88,18 @@ VALUES ('leaderboardOne', 'descriptionOne');
 INSERT INTO game (name, leaderboard_id)
     VALUE ('Game: 1', 1);
 
-INSERT INTO civilization_stat (account_username, game_id, name, is_other_place, victory_points, science, culture)
-VALUES ('Engjëll', 1, 'Portugal', true, 521, 111, 121);
-INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, victory_type, victory_points, science,
-                               culture)
-VALUES ('Chris', 1, 'China', true, 'SCIENTIFIC', 777, 1811, 21);
-INSERT INTO civilization_stat (account_username, game_id, name, is_second_place, victory_type, victory_points, science,
-                               culture)
-VALUES ('Mikkel', 1, 'Japan', true, 'CULTURAL', 777, 231, 321);
-INSERT INTO civilization_stat (account_username, game_id, name, is_third_place, victory_type, victory_points, science,
-                               culture)
-VALUES ('Markus', 1, 'Spain', true, 'DOMINATION', 417, 425, 412);
+INSERT INTO civilization_stat (account_username, game_id, name, is_other_place, victory_points,
+                               military_strength, science, culture, gold, religious_points, diplomatic_favors)
+VALUES ('Engjëll', 1, 'Portugal', true, 521, 1, 111, 121, 2, 3, 4);
+
+INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, victory_type, victory_points,
+                               military_strength, science, culture, gold, religious_points, diplomatic_favors)
+VALUES ('Chris', 1, 'China', true, 'SCIENTIFIC', 777, 1, 1811, 21, 2, 3, 4);
+
+INSERT INTO civilization_stat (account_username, game_id, name, is_second_place, victory_type, victory_points,
+                               military_strength, science, culture, gold, religious_points, diplomatic_favors)
+VALUES ('Mikkel', 1, 'Japan', true, 'SECOND', 777, 1, 231, 321, 2, 3, 4);
+
+INSERT INTO civilization_stat (account_username, game_id, name, is_third_place, victory_type, victory_points,
+                               military_strength, science, culture, gold, religious_points, diplomatic_favors)
+VALUES ('Markus', 1, 'Spain', true, 'THIRD', 417, 1, 425, 412, 2, 3, 4);

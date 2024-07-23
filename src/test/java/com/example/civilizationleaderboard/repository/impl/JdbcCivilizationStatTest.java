@@ -18,7 +18,7 @@ class JdbcCivilizationStatTest {
 
     @Test
     void getCivilizationStatsOnId() {
-        CivilizationStat expectedCivilizationStat = new CivilizationStat(2, "Chris", 1, "China", true, false, false, false, 777, VictoryType.SCIENTIFIC, 1811, 21);
+        CivilizationStat expectedCivilizationStat = new CivilizationStat(2, "Chris", 1, "China", true, false, false, false, VictoryType.SCIENTIFIC, 777, 1, 1811, 21, 2, 3, 4);
         CivilizationStat actualCivilizationStat = jdbcCivilizationStat.getCivilizationStat(2);
 
         assertEquals(expectedCivilizationStat, actualCivilizationStat);
@@ -26,7 +26,7 @@ class JdbcCivilizationStatTest {
 
     @Test
     void createGameStatAutoPlacement() {
-        CivilizationStat expectedCivilizationStat = new CivilizationStat(5, "Chris", 1, "Maui", true, false, false, false, 456, VictoryType.DOMINATION, 756, 642);
+        CivilizationStat expectedCivilizationStat = new CivilizationStat(5, "Chris", 1, "Maui", true, false, false, false, VictoryType.DOMINATION, 456, 1, 756, 642, 2, 3, 4);
         CivilizationStat civilizationStat = expectedCivilizationStat;
 
         jdbcCivilizationStat.createCivStatAutoPlacement(civilizationStat);
@@ -37,7 +37,7 @@ class JdbcCivilizationStatTest {
 
     @Test
     void createGameStatManuelPlacement() {
-        CivilizationStat expectedCivilizationStat = new CivilizationStat(5, "Chris", 1, "Maui", false, true, false, false, 456, VictoryType.DOMINATION, 756, 642);
+        CivilizationStat expectedCivilizationStat = new CivilizationStat(5, "Chris", 1, "Maui", false, true, false, false, VictoryType.DOMINATION, 456, 1, 756, 642, 2, 3, 4);
         CivilizationStat civilizationStat = expectedCivilizationStat;
 
         jdbcCivilizationStat.createCivStatManuelPlacement(civilizationStat);
@@ -48,7 +48,7 @@ class JdbcCivilizationStatTest {
 
     @Test
     void editGameStat() {
-        CivilizationStat expectedCivilizationStats = new CivilizationStat(4, "EDITED Mikkel", 1, "Spain", false, true, false, false, 417, VictoryType.DOMINATION, 425, 412);
+        CivilizationStat expectedCivilizationStats = new CivilizationStat(4, "EDITED Mikkel", 1, "Spain", false, true, false, false, VictoryType.DOMINATION, 417, 1, 425, 412, 2, 3, 4);
         CivilizationStat civilizationStatsToUpdate = expectedCivilizationStats;
 
         CivilizationStat actualCivilizationStats = jdbcCivilizationStat.editCivStat(civilizationStatsToUpdate);
@@ -58,7 +58,7 @@ class JdbcCivilizationStatTest {
 
     @Test
     void attemptEditGameStatsThatDoesNotExist() {
-        CivilizationStat expectedCivilizationStats = new CivilizationStat(0, "Chris", 1, "12/07-2024", true, false, false, false, 777, VictoryType.CULTURAL, 756, 642);
+        CivilizationStat expectedCivilizationStats = new CivilizationStat(0, "Chris", 1, "12/07-2024", true, false, false, false, VictoryType.CULTURAL, 777, 1, 756, 642, 2, 3, 4);
         CivilizationStat civilizationStatsToUpdate = expectedCivilizationStats;
 
         CivilizationStat actualCivilizationStats = jdbcCivilizationStat.editCivStat(civilizationStatsToUpdate);

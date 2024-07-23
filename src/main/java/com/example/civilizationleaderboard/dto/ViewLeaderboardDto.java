@@ -1,6 +1,5 @@
 package com.example.civilizationleaderboard.dto;
 
-import com.example.civilizationleaderboard.model.CivilizationStat;
 import com.example.civilizationleaderboard.model.Game;
 import com.example.civilizationleaderboard.model.User;
 

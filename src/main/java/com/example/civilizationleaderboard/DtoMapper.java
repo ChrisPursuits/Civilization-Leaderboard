@@ -32,8 +32,8 @@ public class DtoMapper {
                 civStat.accountUsername(),
                 civStat.name(),
                 civStat.haveWon(),
-                civStat.victoryPoints(),
                 civStat.victoryType(),
+                civStat.victoryPoints(),
                 civStat.science(),
                 civStat.culture()
         );
@@ -49,10 +49,14 @@ public class DtoMapper {
                 civStat.isSecondPlace(),
                 civStat.isThirdPlace(),
                 civStat.isOtherPlace(),
-                civStat.victoryPoints(),
                 civStat.victoryType(),
+                civStat.victoryPoints(),
+                civStat.militaryStrength(),
                 civStat.science(),
-                civStat.culture()
+                civStat.culture(),
+                civStat.gold(),
+                civStat.religiousPoints(),
+                civStat.diplomaticFavors()
         );
     }
 
@@ -61,8 +65,8 @@ public class DtoMapper {
                 gameStat.accountUsername(),
                 gameStat.name(),
                 gameStat.haveWon(),
-                gameStat.victoryPoints(),
                 gameStat.victoryType(),
+                gameStat.victoryPoints(),
                 gameStat.science(),
                 gameStat.culture()
         );
@@ -78,10 +82,14 @@ public class DtoMapper {
                 civilizationStat.isSecondPlace(),
                 civilizationStat.isThirdPlace(),
                 civilizationStat.isOtherPlace(),
-                civilizationStat.getVictoryPoints(),
                 civilizationStat.getVictoryType(),
+                civilizationStat.getVictoryPoints(),
+                civilizationStat.getMilitaryStrength(),
                 civilizationStat.getScience(),
-                civilizationStat.getCulture()
+                civilizationStat.getCulture(),
+                civilizationStat.getGold(),
+                civilizationStat.getReligiousPoints(),
+                civilizationStat.getDiplomaticFavors()
         );
     }
 

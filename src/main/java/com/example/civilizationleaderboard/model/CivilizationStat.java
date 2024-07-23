@@ -14,10 +14,14 @@ public class CivilizationStat {
     private boolean isSecondPlace;
     private boolean isThirdPlace;
     private boolean isOtherPlace;
-    private int victoryPoints;
     private VictoryType victoryType;
+    private int victoryPoints;
+    private int militaryStrength;
     private int science;
     private int culture;
+    private int gold;
+    private int religiousPoints;
+    private int diplomaticFavors;
 
     //Constructor used in impl, DtoMapper and test.
     public CivilizationStat(
@@ -29,10 +33,14 @@ public class CivilizationStat {
             boolean isSecondPlace,
             boolean isThirdPlace,
             boolean isOtherPlace,
-            int victoryPoints,
             VictoryType victoryType,
+            int victoryPoints,
+            int militaryStrength,
             int science,
-            int culture) {
+            int culture,
+            int gold,
+            int religiousPoints,
+            int diplomaticFavors) {
 
         this.id = id;
         this.accountUsername = accountUsername;
@@ -42,16 +50,20 @@ public class CivilizationStat {
         this.isSecondPlace = isSecondPlace;
         this.isThirdPlace = isThirdPlace;
         this.isOtherPlace = isOtherPlace;
-        this.victoryPoints = victoryPoints;
         this.victoryType = victoryType;
+        this.victoryPoints = victoryPoints;
+        this.militaryStrength = militaryStrength;
         this.science = science;
         this.culture = culture;
+        this.gold = gold;
+        this.religiousPoints = religiousPoints;
+        this.diplomaticFavors = diplomaticFavors;
     }
 
     //TODO version PRIVATE LOG
     //Used for creating GameStat that is not part of any leaderboard. Meant to be used in future version where you can have a private log of all your games.
     //Precisely used in mapping of CreatePrivateGameStatDto
-    public CivilizationStat(String accountUsername, String name, boolean isFirstPlace, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    public CivilizationStat(String accountUsername, String name, boolean isFirstPlace, VictoryType victoryType, int victoryPoints, int science, int culture) {
         this.accountUsername = accountUsername;
         this.name = name;
         this.isFirstPlace = isFirstPlace;
@@ -64,7 +76,7 @@ public class CivilizationStat {
     //TODO version PRIVATE LOG
     //Used for creating GameStat that is not part of any leaderboard. Meant to be used in future version where you can have a private log of all your games.
     //Precisely used in mapping of PrivateGameStatDto (in get method?)
-    public CivilizationStat(int id, String accountUsername, String name, boolean isFirstPlace, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    public CivilizationStat(int id, String accountUsername, String name, boolean isFirstPlace, VictoryType victoryType, int victoryPoints, int science, int culture) {
         this.id = id;
         this.accountUsername = accountUsername;
         this.name = name;
@@ -76,7 +88,7 @@ public class CivilizationStat {
     }
 
     //Constructor used only in DtoMapper
-    public CivilizationStat(String accountUsername, int gameId, String name, boolean isFirstPlace, boolean isSecondPlace, boolean isThirdPlace, boolean isOtherPlace, int victoryPoints, VictoryType victoryType, int science, int culture) {
+    public CivilizationStat(String accountUsername, int gameId, String name, boolean isFirstPlace, boolean isSecondPlace, boolean isThirdPlace, boolean isOtherPlace, VictoryType victoryType, int victoryPoints, int militaryStrength, int science, int culture, int gold, int religiousPoints, int diplomaticFavors) {
         this.accountUsername = accountUsername;
         this.gameId = gameId;
         this.name = name;
@@ -84,10 +96,14 @@ public class CivilizationStat {
         this.isSecondPlace = isSecondPlace;
         this.isThirdPlace = isThirdPlace;
         this.isOtherPlace = isOtherPlace;
-        this.victoryPoints = victoryPoints;
         this.victoryType = victoryType;
+        this.victoryPoints = victoryPoints;
+        this.militaryStrength = militaryStrength;
         this.science = science;
         this.culture = culture;
+        this.gold = gold;
+        this.religiousPoints = religiousPoints;
+        this.diplomaticFavors = diplomaticFavors;
     }
 
     public int getId() {
@@ -186,16 +202,48 @@ public class CivilizationStat {
         this.culture = culture;
     }
 
+    public int getMilitaryStrength() {
+        return militaryStrength;
+    }
+
+    public void setMilitaryStrength(int militaryStrength) {
+        this.militaryStrength = militaryStrength;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public int getReligiousPoints() {
+        return religiousPoints;
+    }
+
+    public void setReligiousPoints(int religiousPoints) {
+        this.religiousPoints = religiousPoints;
+    }
+
+    public int getDiplomaticFavors() {
+        return diplomaticFavors;
+    }
+
+    public void setDiplomaticFavors(int diplomaticFavors) {
+        this.diplomaticFavors = diplomaticFavors;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CivilizationStat that)) return false;
-        return id == that.id && gameId == that.gameId && isFirstPlace == that.isFirstPlace && isSecondPlace == that.isSecondPlace && isThirdPlace == that.isThirdPlace && isOtherPlace == that.isOtherPlace && victoryPoints == that.victoryPoints && science == that.science && culture == that.culture && Objects.equals(accountUsername, that.accountUsername) && Objects.equals(name, that.name) && victoryType == that.victoryType;
+        return id == that.id && gameId == that.gameId && isFirstPlace == that.isFirstPlace && isSecondPlace == that.isSecondPlace && isThirdPlace == that.isThirdPlace && isOtherPlace == that.isOtherPlace && victoryPoints == that.victoryPoints && militaryStrength == that.militaryStrength && science == that.science && culture == that.culture && gold == that.gold && religiousPoints == that.religiousPoints && diplomaticFavors == that.diplomaticFavors && Objects.equals(accountUsername, that.accountUsername) && Objects.equals(name, that.name) && victoryType == that.victoryType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountUsername, gameId, name, isFirstPlace, isSecondPlace, isThirdPlace, isOtherPlace, victoryPoints, victoryType, science, culture);
+        return Objects.hash(id, accountUsername, gameId, name, isFirstPlace, isSecondPlace, isThirdPlace, isOtherPlace, victoryType, victoryPoints, militaryStrength, science, culture, gold, religiousPoints, diplomaticFavors);
     }
 
     @Override
@@ -209,10 +257,14 @@ public class CivilizationStat {
                ", isSecondPlace=" + isSecondPlace +
                ", isThirdPlace=" + isThirdPlace +
                ", isOtherPlace=" + isOtherPlace +
-               ", victoryPoints=" + victoryPoints +
                ", victoryType=" + victoryType +
+               ", victoryPoints=" + victoryPoints +
+               ", militaryStrength=" + militaryStrength +
                ", science=" + science +
                ", culture=" + culture +
+               ", gold=" + gold +
+               ", religiousPoints=" + religiousPoints +
+               ", diplomaticFavors=" + diplomaticFavors +
                '}';
     }
 }

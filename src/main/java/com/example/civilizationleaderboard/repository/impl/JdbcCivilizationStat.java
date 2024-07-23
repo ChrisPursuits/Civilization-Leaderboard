@@ -26,8 +26,8 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                 connection.setAutoCommit(false);
 
                 String createCivStat = """
-                        INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, victory_type, victory_points, science, culture, is_other_place)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+                        INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, victory_type, victory_points, science, culture, is_other_place, gold, military_strength, religious_points, diplomatic_favors)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                         """;
 
 
@@ -44,6 +44,10 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                 preparedStatement.setInt(6, civilizationStatToCreate.getVictoryPoints());
                 preparedStatement.setInt(7, civilizationStatToCreate.getScience());
                 preparedStatement.setInt(8, civilizationStatToCreate.getCulture());
+                preparedStatement.setInt(10, civilizationStatToCreate.getGold());
+                preparedStatement.setInt(11, civilizationStatToCreate.getMilitaryStrength());
+                preparedStatement.setInt(12, civilizationStatToCreate.getReligiousPoints());
+                preparedStatement.setInt(13, civilizationStatToCreate.getDiplomaticFavors());
                 preparedStatement.executeUpdate();
 
                 ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -78,8 +82,8 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                 connection.setAutoCommit(false);
 
                 String createCivStat = """
-                        INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, is_second_place, is_third_place, is_other_place, victory_type, victory_points, science, culture)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                        INSERT INTO civilization_stat (account_username, game_id, name, is_first_place, is_second_place, is_third_place, is_other_place, victory_type, victory_points, military_strength, science, culture, gold, religious_points, diplomatic_favors)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                         """;
 
 
@@ -94,8 +98,12 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                 preparedStatement.setBoolean(7, civilizationStatToCreate.isOtherPlace());
                 preparedStatement.setString(8, civilizationStatToCreate.getVictoryType().toString());
                 preparedStatement.setInt(9, civilizationStatToCreate.getVictoryPoints());
-                preparedStatement.setInt(10, civilizationStatToCreate.getScience());
-                preparedStatement.setInt(11, civilizationStatToCreate.getCulture());
+                preparedStatement.setInt(10, civilizationStatToCreate.getMilitaryStrength());
+                preparedStatement.setInt(11, civilizationStatToCreate.getScience());
+                preparedStatement.setInt(12, civilizationStatToCreate.getCulture());
+                preparedStatement.setInt(13, civilizationStatToCreate.getGold());
+                preparedStatement.setInt(14, civilizationStatToCreate.getReligiousPoints());
+                preparedStatement.setInt(15, civilizationStatToCreate.getDiplomaticFavors());
                 preparedStatement.executeUpdate();
 
                 ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -144,10 +152,14 @@ public class JdbcCivilizationStat implements CivilizationStatRepository {
                             resultSet.getBoolean(6),
                             resultSet.getBoolean(7),
                             resultSet.getBoolean(8),
-                            resultSet.getInt(10),
                             VictoryType.valueOf(resultSet.getString(9)),
+                            resultSet.getInt(10),
                             resultSet.getInt(11),
-                            resultSet.getInt(12)
+                            resultSet.getInt(12),
+                            resultSet.getInt(13),
+                            resultSet.getInt(14),
+                            resultSet.getInt(15),
+                            resultSet.getInt(16)
                     );
                 }
 

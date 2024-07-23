@@ -11,9 +11,13 @@ public record CivStatDto(
         boolean isSecondPlace,
         boolean isThirdPlace,
         boolean isOtherPlace,
-        int victoryPoints,
         VictoryType victoryType,
+        int victoryPoints,
+        int militaryStrength,
         int science,
-        int culture
+        int culture,
+        int gold,
+        int religiousPoints,
+        int diplomaticFavors
 ) {
 }
